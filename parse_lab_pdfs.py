@@ -52,9 +52,10 @@ CATEGORY_RE  = re.compile(
 )
 
 # Línea de resultado: Nombre  Valor  Unidad  Rango
-# Acepta líneas con resultado numérico o texto corto
+# Acepta líneas con resultado numérico o texto corto (no usado directamente; la extracción
+# usa el parser multi-línea is_numeric_value / parse_lab_results)
 RESULT_RE = re.compile(
-    r'^(.{5,50?}?)\s+'                  # nombre del parámetro
+    r'^(.{5,50}?)\s+'                   # nombre del parámetro (non-greedy range)
     r'([<>≤≥]?\s*[\d,\.]+\s*[↑↓\*]*|'  # resultado numérico
     r'(?:POSITIVO|NEGATIVO|PRESENTE|AUSENTE|SIN DESARROLLO|NO ES APARENTE|NORMAL|TRANSPARENTE|AMARILLO|'
     r'NEGATIVO PARA|SIN CRECIMIENTO|MENOR A|MAYOR A|NEG|POS).*?)'  # resultado textual
