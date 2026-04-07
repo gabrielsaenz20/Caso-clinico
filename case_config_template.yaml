@@ -1,0 +1,1098 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PLANTILLA DE CONFIGURACIÓN — REPORTE DE CASO CLÍNICO BILINGÜE (ES/EN)
+# Uso: python3 build_case_report.py --config mi_caso.yaml
+#
+# Instrucciones:
+#   [REQUERIDO]         → Campo obligatorio, reemplazar con datos reales.
+#   [AI_PENDIENTE: ...] → Texto que requiere generación por IA o redacción manual.
+#                         Aparecerá en el documento en color naranja como marcador.
+#   paths               → Rutas relativas a la ubicación de este archivo YAML.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ── Salida ────────────────────────────────────────────────────────────────────
+output_file: "case_report_FINAL.docx"
+figs_dir: "figs"           # Carpeta donde se guardarán fotogramas extraídos y figuras
+
+
+# ── Información institucional ─────────────────────────────────────────────────
+institution:
+  ministry_es: "MINISTERIO DE SALUD PÚBLICA DEL ECUADOR"      # [REQUERIDO]
+  ministry_en: "MINISTRY OF PUBLIC HEALTH OF ECUADOR"         # [REQUERIDO]
+  name_es: "Hospital de Especialidades Eugenio Espejo"
+  name_en: "Eugenio Espejo Specialty Hospital"
+  department_es: "Servicio de Otorrinolaringología"
+  department_en: "Otorhinolaryngology Department"
+  city: "Quito, Ecuador"
+
+
+# ── Título del artículo ───────────────────────────────────────────────────────
+# Para título con texto en itálica (nombre de microorganismo, etc.) usar title_parts_XX
+# Si el título es texto plano, usar title_es / title_en
+title:
+  es: "ANGINA DE LUDWIG COMPLICADA CON FASCITIS NECROTIZANTE CERVICAL EN PACIENTE DIABÉTICA: REPORTE DE UN CASO CON AISLAMIENTO DE "
+  en: "LUDWIG'S ANGINA COMPLICATED WITH CERVICAL NECROTIZING FASCIITIS IN A DIABETIC PATIENT: A CASE REPORT WITH ISOLATION OF ESBL-PRODUCING "
+  # Partes extra con formato especial (ej. nombre en itálica + texto final)
+  suffix_italic_es: "Klebsiella pneumoniae"
+  suffix_end_es: " PRODUCTORA DE BLEE"
+  suffix_italic_en: "Klebsiella pneumoniae"
+  suffix_end_en: ""   # vacío si no hay texto después del nombre en itálica
+
+
+# ── Autores y afiliaciones ────────────────────────────────────────────────────
+authors:
+  - name: "Jean Pierre Gavilanez Heras, MD, MSc"
+    affiliation: 1
+    orcid: "0009-0008-6518-6041"
+    corresponding: true
+    email: "jean.gavilanez@hee.gob.ec"
+    institution_city: "Hospital de Especialidades Eugenio Espejo, Quito, Ecuador"
+    suffix_es: "¹"
+    suffix_en: "¹"
+  - name: "Christian Alfonso Freire Zamora, MD, Esp. ORL"
+    affiliation: 1
+    orcid: "0000-0003-2237-1462"
+    corresponding: false
+    supervisor: true
+    supervisor_note_es: "Especialista en ORL, Jefe del Servicio de ORL, HEEE. Tutor del caso."
+    supervisor_note_en: "ORL Specialist, Head of ORL Department, HEEE. Case Supervisor."
+    suffix_es: "¹*"
+    suffix_en: "¹*"
+  - name: "Hernán Javier Campoverde Sánchez, MD, MSc"
+    affiliation: 1
+    orcid: "0009-0000-4802-0105"
+    corresponding: false
+    suffix_es: "¹"
+    suffix_en: "¹"
+  - name: "Gabriel Saenz Ortega, MD"
+    affiliation: 2
+    orcid: "0009-0009-5669-1027"
+    corresponding: false
+    suffix_es: "²"
+    suffix_en: "²"
+
+affiliations:
+  1:
+    es: "Servicio de Otorrinolaringología, Hospital de Especialidades Eugenio Espejo (HEEE), Ministerio de Salud Pública del Ecuador. Quito, Ecuador."
+    en: "Department of Otorhinolaryngology, Eugenio Espejo Specialty Hospital (HEEE), Ministry of Public Health of Ecuador. Quito, Ecuador."
+  2:
+    es: "Médico independiente / Independent Physician. Quito, Ecuador."
+    en: "Independent Physician / Médico independiente. Quito, Ecuador."
+
+conflict_funding_consent_es: "Conflicto de intereses: Ninguno.  |  Financiamiento: Ninguno.  |  Consentimiento informado: Obtenido."
+conflict_funding_consent_en: "Conflicts of interest: None.  |  Funding: None.  |  Informed consent: Obtained."
+
+
+# ── Resumen / Abstract ────────────────────────────────────────────────────────
+abstract:
+  introduction_es: >
+    La Angina de Ludwig es una celulitis indurada bilateral del suelo de la boca que, sin
+    tratamiento oportuno, puede progresar a fascitis necrotizante cervical (FNC) con mortalidad
+    del 15–40%. La diabetes mellitus (DM) es el principal factor de riesgo de progresión.
+  introduction_en: >
+    Ludwig's Angina is a bilateral indurated cellulitis of the floor of the mouth that, without
+    timely treatment, can progress to cervical necrotizing fasciitis (CNF) with 15–40% mortality.
+    Diabetes mellitus (DM) is the main risk factor for progression.
+
+  case_es: "[AI_PENDIENTE: Redactar párrafo de presentación del caso resumiendo datos clave del paciente, hallazgos de laboratorio, cultivos y evolución (máx. 150 palabras)]"
+  case_en: "[AI_PENDING: Write case presentation paragraph summarizing key patient data, laboratory findings, cultures and outcome (max 150 words)]"
+
+  conclusions_label_es: "Conclusiones"
+  conclusions_label_en: "Conclusions"
+  conclusions_es: "[AI_PENDIENTE: Redactar conclusión del resumen en 2-3 oraciones]"
+  conclusions_en: "[AI_PENDING: Write abstract conclusions in 2-3 sentences]"
+
+  keywords_es: "Angina de Ludwig; fascitis necrotizante cervical; infección odontogénica; Klebsiella pneumoniae BLEE; diabetes mellitus; desbridamiento quirúrgico; meropenem; Hospital Eugenio Espejo."
+  keywords_en: "Ludwig's Angina; cervical necrotizing fasciitis; odontogenic infection; ESBL Klebsiella pneumoniae; diabetes mellitus; surgical debridement; meropenem; Eugenio Espejo Hospital."
+
+
+# ── Introducción ──────────────────────────────────────────────────────────────
+introduction:
+  subsections:
+    - title_es: "1.1 Angina de Ludwig: definición y anatomía"
+      title_en: "1.1 Ludwig's Angina: definition and anatomy"
+      text_es: "[AI_PENDIENTE: Describir definición anatómica, espacios comprometidos y comunicación con espacio retrofaríngeo/mediastino. Incluir citas 1,2,3,4]"
+      text_en: "[AI_PENDING: Describe anatomical definition, involved spaces and communication with retropharyngeal/mediastinal space. Include citations 1,2,3,4]"
+
+    - title_es: "1.2 Epidemiología y factores de riesgo"
+      title_en: "1.2 Epidemiology and risk factors"
+      text_es: "[AI_PENDIENTE: Epidemiología, etiología odontogénica, DM como factor de riesgo. Citas 5,6,8,21,25]"
+      text_en: "[AI_PENDING: Epidemiology, odontogenic etiology, DM as risk factor. Citations 5,6,8,21,25]"
+
+    - title_es: "1.3 Progresión a fascitis necrotizante cervical"
+      title_en: "1.3 Progression to cervical necrotizing fasciitis"
+      text_es: "[AI_PENDIENTE: Definir FNC, mortalidad, tríada diagnóstica. Citas 4,9,10]"
+      text_en: "[AI_PENDING: Define CNF, mortality, diagnostic triad. Citations 4,9,10]"
+
+  objective_es: "[AI_PENDIENTE: Redactar objetivo del reporte mencionando diagnóstico, microorganismo, contexto de DM2 y aspectos a analizar. Incluir citas 1,21]"
+  objective_en: "[AI_PENDING: Write report objective mentioning diagnosis, organism, T2DM context and aspects to analyze. Include citations 1,21]"
+
+
+# ── Presentación del caso ─────────────────────────────────────────────────────
+case_presentation:
+  consent_statement_es: "Presentado con consentimiento informado de la paciente, en cumplimiento de la Ley Orgánica de Salud del Ecuador. La identidad se protege mediante iniciales."
+  consent_statement_en: "Reported with informed patient consent per Ecuador's Organic Health Law. Identity protected with initials."
+
+  # ── 2.1 Datos generales (tabla automática) ──────────────────────────────────
+  demographics_table:
+    title_es: "Datos generales de la paciente"
+    title_en: "Patient demographic data"
+    headers_es: ["Parámetro", "Dato"]
+    headers_en: ["Parameter", "Data"]
+    widths: [6, 10]
+    rows_es:
+      - ["Paciente (iniciales)", "G.M.P.Q."]
+      - ["Sexo / Edad", "Femenino, 49 años (05/07/1976)"]
+      - ["Procedencia", "Santo Domingo de los Tsáchilas, Ecuador"]
+      - ["Centro remitente", "Hospital Dr. Gustavo Domínguez Zambrano, Santo Domingo"]
+      - ["Fecha de ingreso HEEE", "16 de enero de 2026"]
+      - ["Servicio de ingreso", "Otorrinolaringología — Piso 6, HEEE, Quito"]
+      - ["Historia clínica HEEE", "0802060905"]
+      - ["Médico tutor / Jefe de servicio", "Dr. Christian Alfonso Freire Zamora, MD, Esp. ORL — Jefe del Servicio ORL, HEEE. Tutor del caso."]
+    rows_en:
+      - ["Patient (initials)", "G.M.P.Q."]
+      - ["Sex / Age", "Female, 49 years (07/05/1976)"]
+      - ["Origin", "Santo Domingo de los Tsáchilas, Ecuador"]
+      - ["Referring hospital", "Hospital Dr. Gustavo Domínguez Zambrano, Santo Domingo"]
+      - ["Date of admission (HEEE)", "January 16, 2026"]
+      - ["Admitting service", "Otorhinolaryngology — Floor 6, HEEE, Quito"]
+      - ["HEEE medical record", "0802060905"]
+      - ["Case supervisor / Dept. head", "Dr. Christian Alfonso Freire Zamora, MD, ORL Specialist — Head of ORL Dept., HEEE. Case Supervisor."]
+
+  # ── 2.2 Motivo de consulta ──────────────────────────────────────────────────
+  chief_complaint:
+    # narrative: texto libre o lista de partes [{text, bold, italic, sup}]
+    narrative_es:
+      - text: "Cuadro de aproximadamente un mes de evolución (inicio: diciembre 2025) de edema mandibular progresivo que se extiende a región cervical y tórax, alzas térmicas, disfagia y aparición de fístulas cutáneas cervicales con drenaje purulento fétido. "
+      - text: "Evento desencadenante: extracción molar el 14/12/2025"
+        bold: true
+      - text: " en contexto ambulatorio sin cobertura antibiótica documentada."
+      - text: "22"
+        sup: true
+    narrative_en:
+      - text: "~One month history (onset December 2025) of progressive mandibular edema extending to neck and chest, fever spikes, dysphagia, and cervical fistulas draining fetid purulent material. "
+      - text: "Triggering event: molar extraction on December 14, 2025"
+        bold: true
+      - text: ", outpatient setting, without documented antibiotic coverage."
+      - text: "22"
+        sup: true
+
+    medical_history_label_es: "Antecedentes: "
+    medical_history_label_en: "Past medical history: "
+    medical_history_es: "DM2 × 11 años (metformina 500 mg VO). Cardiopatía hipertensiva sin IC congestiva (CIE-10: I119). Sin alergias medicamentosas conocidas."
+    medical_history_en: "T2DM × 11 years (metformin 500 mg PO). Hypertensive heart disease without CHF (ICD-10: I119). No known drug allergies."
+
+    lab_footnote_es: "¹ NLR: razón neutrófilo-linfocito (neutrophil-to-lymphocyte ratio). ² PLR: razón plaqueta-linfocito (platelet-to-lymphocyte ratio)."
+    lab_footnote_en: "¹ NLR: neutrophil-to-lymphocyte ratio. ² PLR: platelet-to-lymphocyte ratio."
+
+  # ── 2.3 Examen físico / Vital signs ─────────────────────────────────────────
+  physical_exam:
+    vital_signs_table:
+      title_es: "Signos vitales durante el traslado al HEEE (16/01/2026)"
+      title_en: "Vital signs during transfer to HEEE (January 16, 2026)"
+      headers_es: ["Parámetro", "Valor inicial", "Valor final", "Referencia"]
+      headers_en: ["Parameter", "Initial value", "Final value", "Reference range"]
+      widths: [5, 3.5, 3.5, 4]
+      rows_es:
+        - ["FC (lpm)", "~85", "~104", "60–100"]
+        - ["Temperatura (°C)", "39,2", "38,8", "36,5–37,5"]
+        - ["TA (mmHg)", "~152/89", "~105/75", "< 130/80"]
+        - ["FR (rpm)", "20", "20", "12–20"]
+        - ["SpO2 (%)", "99", "94", "≥ 95"]
+        - ["Glasgow", "15/15", "15/15", "15/15"]
+      rows_en:
+        - ["HR (bpm)", "~85", "~104", "60–100"]
+        - ["Temperature (°C)", "39.2", "38.8", "36.5–37.5"]
+        - ["BP (mmHg)", "~152/89", "~105/75", "< 130/80"]
+        - ["RR (rpm)", "20", "20", "12–20"]
+        - ["SpO2 (%)", "99", "94", "≥ 95"]
+        - ["Glasgow", "15/15", "15/15", "15/15"]
+
+    findings_label_es: "Hallazgos clínicos relevantes al ingreso:"
+    findings_label_en: "Relevant clinical findings on admission:"
+    findings_bullets_es:
+      - "Necrosis tisular extensa en región cervical anterior y lateral con escara negra y áreas de tejido fibrinoide amarillento."
+      - "Fístulas cutáneas activas con drenaje de líquido purulento fétido. Edema indurado submandibular-supraclavicular bilateral."
+      - "Trismus funcional. Voz empastada. Sin estridor audible al ingreso. SpO2 94% durante el traslado."
+      - "Taquicardia (FC ~104 lpm). Temperatura 38,8–39,2°C. Edema grado 2+ en miembros inferiores."
+    findings_bullets_en:
+      - "Extensive tissue necrosis of anterior and lateral cervical region with black eschar and yellowish fibrinoid areas."
+      - "Active cutaneous fistulas with fetid purulent drainage. Bilateral submandibular-supraclavicular indurated edema."
+      - "Functional trismus. Muffled voice. No audible stridor on admission. SpO2 94% during transfer."
+      - "Tachycardia (HR ~104 bpm). Temperature 38.8–39.2°C. Grade 2+ lower limb edema."
+
+  # ── 2.4 Laboratorios preingreso ──────────────────────────────────────────────
+  preingreso_labs:
+    # Opción A: ingresar manualmente los datos de laboratorio
+    # Opción B: usar parse_lab_pdfs.py para extraer automáticamente de los PDFs
+    #           y pegar el resultado en la sección lab_auto_data abajo
+    # lab_pdfs_dir: "EXAMENES DE LABORATORIO"  # activar para extracción automática (ver parse_lab_pdfs.py)
+    table:
+      title_es: "Evolución de laboratorios preingreso — Hospital Dr. Gustavo Domínguez Zambrano (15–16/01/2026)"
+      title_en: "Pre-admission laboratory evolution — Hospital Dr. Gustavo Domínguez Zambrano (January 15–16, 2026)"
+      headers_es: ["Parámetro", "15/01 15:00 h", "16/01 01:41 h", "16/01 10:50 h", "Referencia"]
+      headers_en: ["Parameter", "15/01 15:00 h", "16/01 01:41 h", "16/01 10:50 h", "Reference range"]
+      widths: [4.5, 2.8, 2.8, 2.8, 3.1]
+      rows_es:
+        - ["Leucocitos x10³/µL", "13,17 ↑", "10,42", "19,55 ↑↑", "4,0–10,0"]
+        - ["Neutrófilos (%)", "83,3", "75,4", "79,4", "50–70"]
+        - ["NLR¹", "9,3 ↑", "5,6", "7,5 ↑", "< 3,0"]
+        - ["PLR²", "628 ↑↑", "479 ↑↑", "648 ↑↑", "< 150"]
+        - ["Hemoglobina (g/dL)", "9,7 ↓", "8,2 ↓", "8,9 ↓", "12,3–15,3"]
+        - ["Plaquetas x10³/µL", "741 ↑↑", "675 ↑↑", "727 ↑↑", "149–409"]
+        - ["Glucosa (mg/dL)", "299,7 ↑↑", "—", "164,9 ↑", "60–100"]
+        - ["Sodio (mEq/L)", "126,9 ↓↓", "—", "130,6 ↓", "136–145"]
+        - ["Potasio (mEq/L)", "3,3 ↓", "—", "3,1 ↓", "3,5–5,1"]
+        - ["pH (gasometría)", "7,581 ↑", "—", "—", "7,35–7,45"]
+        - ["Lactato (mmol/L)", "1,2", "—", "—", "0,6–1,7"]
+        - ["HBsAg / Anti-VHC", "NEG / NEG", "—", "—", "Negativos"]
+      rows_en:
+        - ["WBC (×10³/µL)", "13.17 ↑", "10.42", "19.55 ↑↑", "4.0–10.0"]
+        - ["Neutrophils (%)", "83.3", "75.4", "79.4", "50–70"]
+        - ["NLR¹", "9.3 ↑", "5.6", "7.5 ↑", "< 3.0"]
+        - ["PLR²", "628 ↑↑", "479 ↑↑", "648 ↑↑", "< 150"]
+        - ["Hemoglobin (g/dL)", "9.7 ↓", "8.2 ↓", "8.9 ↓", "12.3–15.3"]
+        - ["Platelets (×10³/µL)", "741 ↑↑", "675 ↑↑", "727 ↑↑", "149–409"]
+        - ["Glucose (mg/dL)", "299.7 ↑↑", "—", "164.9 ↑", "60–100"]
+        - ["Sodium (mEq/L)", "126.9 ↓↓", "—", "130.6 ↓", "136–145"]
+        - ["Potassium (mEq/L)", "3.3 ↓", "—", "3.1 ↓", "3.5–5.1"]
+        - ["pH (blood gas)", "7.581 ↑", "—", "—", "7.35–7.45"]
+        - ["Lactate (mmol/L)", "1.2", "—", "—", "0.6–1.7"]
+        - ["HBsAg / Anti-HCV", "NEG / NEG", "—", "—", "Negative"]
+
+
+# ── Estudios de imagen ────────────────────────────────────────────────────────
+imaging:
+  section_title_es: "3. ESTUDIOS DE IMAGEN"
+  section_title_en: "3. IMAGING STUDIES"
+
+  # Grupos de imágenes (cada grupo = una subsección)
+  image_groups:
+    - id: sagital
+      subsection_title_es: "3.1 Plano sagital — TAC simple de cuello y tórax"
+      subsection_title_en: "3.1 Sagittal plane — non-contrast CT of neck and chest"
+      narrative_es:
+        - text: "La TAC simple de cuello y tórax (sin contraste) del 17/01/2026 reportó gas en región cervical bilateral y anterior, con colección en región pectoral izquierda. Los cortes sagitales (Figuras 1–3) demuestran gas en tejidos blandos cervicales, colección purulenta retrofaríngea y extensión infero-superior del proceso necrotizante desde C3 hasta la región supraclavicular."
+        - text: "11,23"
+          sup: true
+      narrative_en:
+        - text: "Non-contrast CT of the neck and chest (January 17, 2026) reported bilateral and anterior cervical gas with left pectoral collection. Sagittal CT sections (Figures 1–3) demonstrate soft tissue gas, retropharyngeal purulent collection, and inferosuperior extension of the necrotizing process from C3 to the supraclavicular region."
+        - text: "11,23"
+          sup: true
+      # Lista de imágenes del grupo (se muestran en fila)
+      images:
+        - file: "tac1_sagital_gas.jpg"
+          width_cm: 5.5
+          caption_es: "TAC sagital (16/01/2026): gas retrofaríngeo (burbujas hipodensas) y colección purulenta cervical. Proceso necrotizante con gas difuso en tejidos blandos, signo patognomónico de FNC."
+          caption_en: "Sagittal CT (16/01/2026): retropharyngeal gas (hypodense bubbles) and cervical purulent collection. Necrotizing process with diffuse soft tissue gas — pathognomonic sign of CNF."
+        - file: "tac2_sagital_coleccion.jpg"
+          width_cm: 5.5
+          caption_es: "TAC sagital (16/01/2026): colección purulenta con múltiples burbujas de gas en espacios cervicales profundos. Extensión desde el espacio retrofaríngeo hacia el mediastino superior."
+          caption_en: "Sagittal CT (16/01/2026): purulent collection with multiple gas bubbles in deep cervical spaces. Extension from the retropharyngeal space toward the superior mediastinum."
+        - file: "tac3_sagital_extension.jpg"
+          width_cm: 5.5
+          caption_es: "TAC sagital (16/01/2026): extensión inferosuperior del proceso necrotizante cervical bilateral desde C3 hasta la región supraclavicular con compromiso del espacio peligroso."
+          caption_en: "Sagittal CT (16/01/2026): inferosuperior extension of the bilateral cervical necrotizing process from C3 to the supraclavicular region with involvement of the danger space."
+
+    - id: coronal
+      subsection_title_es: "3.2 Plano coronal"
+      subsection_title_en: "3.2 Coronal plane"
+      narrative_es:
+        - text: "Los cortes coronales (Figuras 4–6) muestran el absceso necrotizante cervical bilateral, gas difuso en los espacios fasciales profundos del cuello y la extensión hacia el mediastino superior."
+        - text: "11,12"
+          sup: true
+      narrative_en:
+        - text: "Coronal CT sections (Figures 4–6) show bilateral necrotizing cervical abscess, diffuse gas in the deep fascial spaces, and extension toward the superior mediastinum."
+        - text: "11,12"
+          sup: true
+      images:
+        - file: "tac4_coronal_absceso.jpg"
+          width_cm: 5.5
+          caption_es: "TAC coronal (16/01/2026): absceso necrotizante cervical bilateral. Ocupación de los espacios fasciales profundos con gas (hipodensidades puntiformes) en ambos lados del cuello."
+          caption_en: "Coronal CT (16/01/2026): bilateral necrotizing cervical abscess with extension to deep fascial spaces. Note gas (punctiform hypodensities) on both sides of the neck."
+        - file: "tac5_coronal_gas.jpg"
+          width_cm: 5.5
+          caption_es: "TAC coronal (16/01/2026): gas retrofaríngeo bilateral y engrosamiento difuso de tejidos blandos cervicales. Sin desplazamiento laríngeo ni extensión mediastínica al momento del estudio."
+          caption_en: "Coronal CT (16/01/2026): bilateral retropharyngeal gas and diffuse cervical soft tissue thickening. No laryngeal displacement. No mediastinal extension at time of study."
+        - file: "tac6_coronal_espacios.jpg"
+          width_cm: 5.5
+          caption_es: "TAC coronal (16/01/2026): compromiso bilateral de espacios fasciales profundos cervicales con gas y proceso inflamatorio difuso. Nótese la asimetría del proceso con mayor afectación derecha."
+          caption_en: "Coronal CT (16/01/2026): bilateral deep cervical fascial space involvement with gas and diffuse inflammatory process. Greater involvement noted on the right side."
+
+    - id: axial
+      subsection_title_es: "3.3 Plano axial"
+      subsection_title_en: "3.3 Axial plane"
+      narrative_es:
+        - text: "Los cortes axiales (Figuras 7 y 8) muestran la afectación bilateral de los espacios parafaríngeos y submandibulares con hipodensidades compatible con gas extrafascial — hallazgo patognomónico de FNC."
+        - text: "10,11,23"
+          sup: true
+      narrative_en:
+        - text: "Axial CT sections (Figures 7 and 8) show bilateral involvement of the parapharyngeal and submandibular spaces with hypodensities consistent with extrafascial gas — a pathognomonic finding of CNF."
+        - text: "10,11,23"
+          sup: true
+      images:
+        - file: "tac7_axial_parafaringeo.jpg"
+          width_cm: 8
+          caption_es: "TAC axial (16/01/2026): corte a nivel suprahioideo. Hipodensidades bilaterales en espacios parafaríngeos y masticadores compatibles con gas extrafascial, confirmando la naturaleza bilateral de la FNC."
+          caption_en: "Axial CT (16/01/2026): suprahyoid level section. Bilateral hypodensities in parapharyngeal and masticator spaces consistent with extrafascial gas, confirming the bilateral nature of CNF."
+        - file: "tac8_axial_submandibular.jpg"
+          width_cm: 8
+          caption_es: "TAC axial (16/01/2026): segundo corte a nivel suprahioideo. Afectación bilateral simétrica de los espacios fasciales profundos. La distribución bilateral confirma el diagnóstico de Angina de Ludwig complicada con FNC."
+          caption_en: "Axial CT (16/01/2026): second suprahyoid section. Symmetric bilateral involvement of deep cervical fascial spaces. Bilateral distribution confirms the diagnosis of Ludwig's Angina complicated with CNF."
+
+  key_findings:
+    title_es: "3.4 Hallazgos imagenológicos clave"
+    title_en: "3.4 Key imaging findings"
+    ct_report_quote_es: 'Reporte TAC simple de cabeza, cuello y tórax (17/01/2026): "Gas en región cervical derecha, izquierda y anterior. No aparenta mediastinitis. Gas y colección en región pectoral izquierda. Sin invasión ni desplazamiento de vía aérea."'
+    ct_report_quote_en: 'Official CT report (January 16, 2026): "Necrotizing abscess of the cervical region with cutaneous fistulas producing fetid purulent drainage. No laryngeal invasion or displacement observed."'
+    findings_intro_es: "Los hallazgos tomográficos que fundamentaron la indicación de desbridamiento urgente:"
+    findings_intro_en: "Key CT findings supporting the indication for urgent debridement:"
+    findings_bullets_es:
+      - "Gas en tejidos blandos cervicales en múltiples planos (sagital y coronal) — hallazgo patognomónico de FNC."
+      - "Colección purulenta retrofaríngea con extensión de C3 a región supraclavicular."
+      - "Compromiso bilateral de espacios fasciales profundos sin extensión mediastínica al momento del estudio."
+      - "Ausencia de desplazamiento laríngeo — vía aérea no comprometida directamente por la colección."
+    findings_bullets_en:
+      - "Soft tissue gas in multiple planes (sagittal and coronal) — pathognomonic sign of CNF."
+      - "Retropharyngeal purulent collection extending from C3 to the supraclavicular region."
+      - "Bilateral deep cervical fascial space involvement without mediastinal extension at time of study."
+      - "No laryngeal displacement — airway not directly compromised by the collection."
+
+  clinical_photo:
+    title_es: "3.5 Imagen clínica al ingreso HEEE (17/01/2026)"
+    title_en: "3.5 Clinical photograph on HEEE admission (January 17, 2026)"
+    intro_es: "La Figura 9 documenta la extensión de la necrosis cervical, la escara oscura característica de la FNC y las fístulas activas con drenaje purulento al momento de la evaluación en el HEEE."
+    intro_en: "Figure 9 documents the extent of cervical necrosis, the characteristic dark eschar of CNF, and the active fistulas with purulent drainage on evaluation at HEEE."
+    file: "fig2_preop_necrosis_jan17.jpg"
+    width_cm: 10
+    caption_es: "Fotografía clínica al ingreso HEEE (17/01/2026). Necrosis tisular extensa de región cervical anterior y lateral con escara oscura, tejido fibrinoide y fístulas cutáneas activas con drenaje purulento fétido. Paciente con cánula nasal de O₂ y drenaje cervical colocado. Edema submandibular bilateral marcado."
+    caption_en: "Clinical photograph on HEEE admission (January 17, 2026). Extensive tissue necrosis of anterior and lateral cervical region with dark eschar, fibrinoid tissue areas, and active cutaneous fistulas with fetid purulent drainage. Patient with nasal O₂ cannula and cervical drain. Bilateral submandibular edema."
+
+
+# ── Evaluación multidisciplinaria ─────────────────────────────────────────────
+multidisciplinary:
+  subsections:
+    - id: referral
+      title_es: "4.1 Proceso de referencia y recepción"
+      title_en: "4.1 Referral and reception"
+      text_es: "La paciente fue referida por la Dra. Patricia Verónica Morales Cabezas (Especialista en Medicina de Emergencias, SENESCYT: 1027-2017-1891207) desde el Hospital Dr. Gustavo Domínguez Zambrano al HEEE. Traslado en ambulancia SVA terrestre el 16/01/2026 a las 07:00 h. Recibida por la Dra. Mariuxi Báez Moreira."
+      text_en: "Referred by Dr. Patricia Verónica Morales Cabezas (Emergency Medicine Specialist, SENESCYT: 1027-2017-1891207) from Hospital Dr. Gustavo Domínguez Zambrano to HEEE. ALS ground transfer January 16, 2026 at 07:00 h. Received by Dr. Mariuxi Báez Moreira."
+
+    - id: orl
+      title_es: "4.2 Equipo ORL — HEEE"
+      title_en: "4.2 ORL team — HEEE"
+      text_es: "El Servicio de Otorrinolaringología del HEEE evaluó a la paciente al ingreso e identificó Angina de Ludwig complicada con FNC bilateral como emergencia quirúrgica de primer orden, con indicación de desbridamiento radical urgente."
+      text_en: "The Otorhinolaryngology Department team at HEEE evaluated the patient on admission and identified Ludwig's Angina complicated with bilateral CNF as a first-order surgical emergency requiring urgent radical debridement."
+
+    - id: anesthesia
+      title_es: "4.3 Anestesiología"
+      title_en: "4.3 Anesthesiology"
+      parts_es:
+        - text: "El edema cervical masivo y el trismus funcional requirieron protocolo de vía aérea difícil prevista. La intubación orotraqueal se realizó exitosamente bajo anestesia general (confirmada por cultivo de secreción traqueal del 18/01/2026). Clasificación ASA: III."
+        - text: "14"
+          sup: true
+      parts_en:
+        - text: "Massive cervical edema and functional trismus required a predicted difficult airway protocol. Orotracheal intubation performed successfully under general anesthesia (confirmed by tracheal secretion culture, January 17, 2026). ASA classification: III."
+        - text: "14"
+          sup: true
+
+    - id: icu
+      title_es: "4.4 UCI"
+      title_en: "4.4 ICU"
+      text_es: "Ingreso a UCI (Piso 1, HEEE) el 17/01/2026 a las 23:48 h en el posquirúrgico inmediato (Dra. Soraya Acaro) para monitorización continua, soporte metabólico e insulinoterapia IV (meta glucémica perioperatoria: 140–180 mg/dL)."
+      text_en: "Postoperative ICU admission (Floor 1, HEEE) on January 17, 2026 at 23:48 h (Dr. Soraya Acaro) for continuous monitoring, metabolic support, and IV insulin therapy (perioperative target: 140–180 mg/dL)."
+
+    - id: infectious_disease
+      title_es: "4.5 Infectología"
+      title_en: "4.5 Infectious Disease"
+      parts_es:
+        - text: "Ajuste a las 48–72 h: meropenem instaurado como antibiótico definitivo al confirmar "
+        - text: "K. pneumoniae"
+          italic: true
+        - text: " BLEE y "
+        - text: "E. coli"
+          italic: true
+        - text: " BLEE con CIM meropenem ≤0,25 µg/mL — única opción activa frente a ambos aislados."
+        - text: "8,9"
+          sup: true
+      parts_en:
+        - text: "Antibiotic adjustment at 48–72 h: meropenem established as definitive therapy upon confirmation of ESBL-producing "
+        - text: "K. pneumoniae"
+          italic: true
+        - text: " and ESBL "
+        - text: "E. coli"
+          italic: true
+        - text: " with MIC ≤0.25 µg/mL — the only active option against both ESBL isolates."
+        - text: "8,9"
+          sup: true
+
+    - id: plastic_surgery
+      title_es: "4.6 Cirugía Plástica"
+      title_en: "4.6 Plastic Surgery"
+      text_es: "El 16/02/2026 (~POD 29), con parámetros inflamatorios normalizados (WBC 5,97 x10³/µL, Na 138 mEq/L), traslado al Servicio de Cirugía Plástica (Dr. Juan Gutiérrez, Piso 3, HEEE) para manejo reconstructivo del defecto cervical residual."
+      text_en: "February 16, 2026 (~POD 29), with normalized inflammatory parameters (WBC 5.97 ×10³/µL, Na 138 mEq/L), transfer to Plastic Surgery (Dr. Juan Gutiérrez, Floor 3, HEEE) for reconstructive management of the residual cervical defect."
+
+
+# ── Manejo quirúrgico ─────────────────────────────────────────────────────────
+surgical:
+  prep_label_es: "Preparación preoperatoria"
+  prep_label_en: "Preoperative preparation"
+  prep_bullets_es:
+    - "Resucitación con cristaloides IV. Corrección de hiponatremia (Na 126,9 mEq/L) e hipopotasemia (K 2,9 mEq/L)."
+    - "Antibioticoterapia empírica IV (beta-lactámico amplio espectro + metronidazol) hasta disponibilidad de cultivos."
+    - "Insulinoterapia IV (meta 140–180 mg/dL). Solicitud de 2 unidades de paquete globular (Hb 8,2–8,9 g/dL)."
+    - "Consentimiento informado quirúrgico y anestésico. Clasificación ASA: III."
+  prep_bullets_en:
+    - "IV fluid resuscitation. Correction of hyponatremia (Na 126.9 mEq/L) and hypokalemia (K 2.9 mEq/L)."
+    - "Empirical broad-spectrum IV antibiotherapy (beta-lactam + metronidazole) pending cultures."
+    - "IV insulin therapy (target 140–180 mg/dL). Request for 2 units packed RBCs (Hb 8.2–8.9 g/dL)."
+    - "Signed surgical and anesthetic informed consent. ASA classification: III."
+
+  technique:
+    title_es: "5.2 Técnica quirúrgica — Desbridamiento cervical radical"
+    title_en: "5.2 Surgical technique — Radical cervical debridement"
+    date_label_es: "Fecha: "
+    date_label_en: "Date: "
+    date_es: "17 de enero de 2026."
+    date_en: "January 17, 2026 (20:20–22:20 h)."
+    surgeon_label_es: "Cirujano principal: "
+    surgeon_label_en: "Lead surgeon: "
+    surgeon_es: "Dr. Christian Alfonso Freire Zamora, MD, Especialista en ORL — Jefe del Servicio ORL, HEEE."
+    surgeon_en: "Dr. Christian Alfonso Freire Zamora, MD, ORL Specialist — Head of ORL Department, HEEE."
+    approach_parts_es:
+      - text: "Abordaje: "
+        bold: true
+      - text: "Desbridamiento cervical radical bilateral bajo anestesia general con intubación orotraqueal. La naturaleza necrotizante del proceso exigió exéresis radical de todos los tejidos desvitalizados."
+      - text: "9,10"
+        sup: true
+    approach_parts_en:
+      - text: "Approach: "
+        bold: true
+      - text: "Bilateral radical cervical debridement under general anesthesia with orotracheal intubation. The necrotizing nature required radical excision of all devitalized tissue."
+      - text: "9,10"
+        sup: true
+    procedure_label_es: "Descripción del procedimiento:"
+    procedure_label_en: "Procedure description:"
+    procedure_steps_es:
+      - "Anestesia general con intubación orotraqueal (IOT) bajo protocolo de vía aérea difícil prevista."
+      - "Delimitación de márgenes de necrosis. Extensión bilateral en región cervical anterior, lateral y submandibular."
+      - "Incisiones cervicales con exéresis de escara necrótica y tejido fibrinoide desvitalizado."
+      - "Desbridamiento roma y cortante hasta tejido sano sangrante."
+      - "Evacuación de material purulento fétido. Envío de muestras para cultivos aerobio, anaerobio, hongos y antibiograma."
+      - "Lavado exhaustivo con solución salina normal (SSN) 0,9% tibia hasta irrigación limpia."
+      - "Colocación de drenajes Penrose por contraincisiones. Herida abierta — sin cierre primario."
+    procedure_steps_en:
+      - "General anesthesia with orotracheal intubation (OTI) under predicted difficult airway protocol."
+      - "Necrosis margin demarcation. Bilateral extent involving anterior, lateral, and submandibular cervical region."
+      - "Cervical incisions with excision of necrotic eschar and devitalized fibrinoid tissue."
+      - "Blunt and sharp debridement to healthy bleeding tissue."
+      - "Evacuation of fetid purulent material. Samples sent for aerobic, anaerobic, fungal cultures and antibiogram."
+      - "Thorough irrigation with warm 0.9% normal saline until clean return."
+      - "Penrose drains placed through counter-incisions. Open wound — no primary closure."
+    intraop_parts_es:
+      - text: "Datos intraoperatorios: "
+        bold: true
+      - text: "Duración del procedimiento: 3 horas 10 minutos. Sangrado estimado: 200 mL aproximadamente. Volumen de líquido purulento evacuado: 350 mL aproximadamente. Técnica de intubación: no documentada en el protocolo anestésico."
+    intraop_parts_en:
+      - text: "Intraoperative data: "
+        bold: true
+      - text: "Procedure duration: 3 hours 10 minutes. Estimated blood loss: ~200 mL. Purulent fluid evacuated: ~350 mL. Intubation technique: not documented in the anesthetic protocol."
+    intraop_figs_intro_es: "Las Figuras 10 y 11 documentan el campo quirúrgico intraoperatorio."
+    intraop_figs_intro_en: "Figures 10 and 11 document the intraoperative surgical field."
+    intraop_images:
+      - file: "fig3a_intraop_desbrid_jan18.jpg"
+        width_cm: 8
+        caption_es: "Campo quirúrgico intraoperatorio (18/01/2026): desbridamiento cervical bilateral con retractores. Se evidencia el tejido necrótico y fibrinoide en exéresis, con sangrado activo de tejido vital. Cirujano: Dr. Christian Alfonso Freire Zamora. Servicio de ORL, HEEE."
+        caption_en: "Intraoperative debridement (January 17, 2026): bilateral cervical surgical field with retractors. Necrotic and fibrinoid tissue in excision with active bleeding from viable tissue. Surgeon: Dr. Christian Alfonso Freire Zamora. ORL Department, HEEE."
+      - file: "fig3b_intraop_diseccion_jan18.jpg"
+        width_cm: 8
+        caption_es: "Disección intraoperatoria (18/01/2026): exposición de los planos fasciales profundos cervicales. Se aprecian las estructuras del triángulo anterior del cuello tras el desbridamiento radical."
+        caption_en: "Intraoperative dissection (January 17, 2026): exposure of deep cervical fascial planes. Structures of the anterior cervical triangle visible after radical debridement."
+
+  subsequent_procedures:
+    title_es: "5.3 Procedimientos quirúrgicos subsecuentes"
+    title_en: "5.3 Subsequent surgical procedures"
+    intro_es: "Durante la hospitalización se realizaron tres procedimientos quirúrgicos adicionales bajo anestesia general, documentados en la historia clínica del HEEE (HC 0802060905):"
+    intro_en: "Three additional surgical procedures were performed under general anesthesia during hospitalization, documented in the HEEE medical record (HC 0802060905):"
+    table:
+      title_es: "Procedimientos quirúrgicos durante la hospitalización — HEEE, enero 2026"
+      title_en: "Surgical procedures during hospitalization — HEEE, January 2026"
+      headers_es: ["Fecha / POD", "Procedimiento", "Hallazgos quirúrgicos", "Servicio / Cirujano"]
+      headers_en: ["Date / POD", "Procedure", "Surgical findings", "Department / Surgeon"]
+      widths: [3.5, 5, 6, 3]
+      rows_es:
+        - - "17/01/2026 (POD 0)\n20:20–22:20 h"
+          - "Cervicotomía amplia + drenaje absceso profundo de cuello + limpieza profunda + debridación tejido necrótico región cervical anterior + traqueotomía"
+          - "• Abundantes gleras en región cervical (~80 g)\n• FNC en región cervical anterior\n• Líquido purulento verdoso fétido ~150 mL\n• Colección pectoral izquierdo ~40 mL\n• Tráquea lateralizada a la izquierda\n• Tiroides desplazada hacia inferior\n• Sangrado: ~200 mL. Líquido purulento + gleras: ~350 mL"
+          - "ORL / Dr. Christian Alfonso Freire Zamora\nAyudantes: MD Cárdenas, MD León\nAnestesiología: Dr. Vásquez"
+        - - "21/01/2026 (POD 4)"
+          - "Limpieza profunda de cuello + debridación de gleras en región cervical anterior + toma de cultivo de tejido"
+          - "• Escasas gleras a nivel cervical anterior\n• Sin tejido necrótico evidente\n• Secreción seropurulenta en escasa cantidad\n• Traqueotomo in situ permeable\n• Absceso pectoral izquierdo con edema y eritema"
+          - "Cirugía Plástica"
+        - - "27/01/2026 (POD 10)"
+          - "Limpieza quirúrgica + debridamiento limitado + plastia parcial de heridas en cuello y tórax anterior"
+          - "• Herida cervical anterior sin tejido necrótico, escasas gleras, sin secreción purulenta\n• Traqueotomo in situ funcional\n• Ostomía sin signos de infección\n• Tórax anterior: área cruenta con tejido de granulación moderado, bolsillos de 10 cm hacia posterior\n• Tórax izquierdo: herida con exposición de planos musculares (pectoral mayor)"
+          - "Cirugía Plástica"
+      rows_en:
+        - - "17/01/2026 (POD 0)\n20:20–22:20 h"
+          - "Wide cervicotomy + deep neck abscess drainage + deep neck debridement + necrotic tissue debridement anterior cervical region + tracheotomy"
+          - "• Abundant slough in cervical region (~80 g)\n• CNF anterior cervical region\n• Fetid greenish purulent fluid ~150 mL\n• Left pectoral collection ~40 mL\n• Trachea lateralized to the left\n• Thyroid gland inferiorly displaced\n• Blood loss: ~200 mL. Purulent fluid + slough: ~350 mL"
+          - "ORL / Dr. Christian Alfonso Freire Zamora\nAssistants: MD Cárdenas, MD León\nAnesthesiology: Dr. Vásquez"
+        - - "21/01/2026 (POD 4)"
+          - "Deep neck debridement + slough debridement anterior cervical region + tissue culture"
+          - "• Scant slough in anterior cervical region\n• No necrotic tissue\n• Scant seropurulent secretion\n• Tracheotomy in situ, patent\n• Left pectoral abscess with edema and erythema"
+          - "Plastic Surgery"
+        - - "27/01/2026 (POD 10)"
+          - "Surgical debridement + limited debridement + partial wound plasty of neck and anterior chest"
+          - "• Anterior cervical wound: no necrotic tissue, scant slough, no purulent discharge\n• Tracheotomy in situ, functional\n• Stoma without signs of infection\n• Anterior chest: raw area with moderate granulation tissue, 10 cm posterior pockets\n• Left chest: wound with pectoral major muscle exposure"
+          - "Plastic Surgery"
+
+
+# ── Evolución posoperatoria ───────────────────────────────────────────────────
+postoperative:
+  microbiology_table:
+    title_es: "Resultados microbiológicos definitivos — Laboratorio de Microbiología HEEE (enero–febrero 2026)"
+    title_en: "Definitive microbiological results — HEEE Microbiology Laboratory (January–February 2026)"
+    headers_es: ["Muestra (fecha)", "Microorganismo aislado", "Sensible a", "Resistente a"]
+    headers_en: ["Sample (date)", "Isolated organism", "Sensitive to", "Resistant to"]
+    widths: [4.5, 5, 4.5, 4]
+    rows_es:
+      - - "Hisopado herida cuello der. (17/01/2026)"
+        - [{text: "Klebsiella pneumoniae ss. pneumoniae BLEE", italic: true, bold: true, color_red: true},
+           {text: " + "}, {text: "Candida tropicalis", italic: true},
+           {text: " (aislado concomitante, cultivo de hongos 17/01/2026)"}]
+        - "Amikacina (CIM ≤1), Gentamicina, Imipenem, Meropenem (CIM ≤0,25)"
+        - "Amp/Sulbactam (CIM ≥32), Cefepima, Ceftriaxona (CIM ≥64), Ciprofloxacino, Pip/Tazo, TMP/SMX"
+      - - "Hisopado herida cuello der. — cultivo hongos (19/01/2026)"
+        - [{text: "Candida tropicalis", italic: true}, {text: " + "}, {text: "Candida parapsilosis", italic: true},
+           {text: " — ambas especies confirmadas. Sin antifungigrama disponible."}]
+        - "Sin antifungigrama realizado"
+        - "—"
+      - - "Tejido necrótico cuello (18/01/2026)"
+        - [{text: "Klebsiella pneumoniae BLEE", italic: true}, {text: " (2ª confirmación)"}]
+        - "Meropenem, Imipenem, Amikacina, Gentamicina"
+        - "Mismo perfil BLEE"
+      - - "Secreción cuello — 2ª muestra (18/01/2026)"
+        - [{text: "E. coli BLEE + K. pneumoniae BLEE", italic: true}, {text: " (polimicrobiana)"}]
+        - "Amikacina (S), Gentamicina (S), Imipenem (CIM ≤1), Meropenem (CIM ≤1)"
+        - "Amp/Sulbactam, Cefepima, Ceftriaxona, Pip/Tazo, TMP/SMX"
+      - ["Secreción traqueal (18/01/2026)", "Sin desarrollo bacteriano", "—", "—"]
+      - ["Hemocultivos ×4 sets (18/01/2026)", "SIN DESARROLLO BACTERIANO — bacteriemia descartada", "—", "—"]
+      - ["Hisopado rectal vigilancia (17/01/2026)", "NEGATIVO para resistentes a carbapenems (sin KPC/MBL)", "—", "—"]
+      - ["Urocultivo por sonda (17/01/2026)", "Sin desarrollo bacteriano", "—", "—"]
+      - - "Orina — candiduria (04/02/2026)"
+        - [{text: "Candida spp.", italic: true}, {text: " — Levaduras +++ / Hifas +++ (candiduria nosocomial, POD 17). Especie no identificada."}]
+        - "Antifungigrama no realizado"
+        - "—"
+    rows_en:
+      - - "Right neck wound swab (17/01/2026)"
+        - [{text: "Klebsiella pneumoniae ss. pneumoniae ESBL-producing", italic: true, bold: true, color_red: true},
+           {text: " + "}, {text: "Candida tropicalis", italic: true},
+           {text: " (concomitant isolate, fungal culture 17/01/2026)"}]
+        - "Amikacin (MIC ≤1), Gentamicin, Imipenem, Meropenem (MIC ≤0.25)"
+        - "Amp/Sulbactam (MIC ≥32), Cefepime, Ceftriaxone (MIC ≥64), Ciprofloxacin, Pip/Tazo, TMP/SMX"
+      - - "Neck wound swab — fungal culture (19/01/2026)"
+        - [{text: "Candida tropicalis", italic: true}, {text: " + "}, {text: "Candida parapsilosis", italic: true},
+           {text: " — both species confirmed. No antifungal susceptibility testing performed."}]
+        - "No antifungal susceptibility performed"
+        - "—"
+      - - "Necrotic neck tissue (18/01/2026)"
+        - [{text: "Klebsiella pneumoniae ESBL", italic: true}, {text: " (2nd confirmation)"}]
+        - "Meropenem, Imipenem, Amikacin, Gentamicin"
+        - "Same ESBL profile"
+      - - "Neck secretion — 2nd sample (18/01/2026)"
+        - [{text: "E. coli ESBL + K. pneumoniae ESBL", italic: true}, {text: " (polymicrobial)"}]
+        - "Amikacin (S), Gentamicin (S), Imipenem (MIC ≤1), Meropenem (MIC ≤1)"
+        - "Amp/Sulbactam, Cefepime, Ceftriaxone, Pip/Tazo, TMP/SMX"
+      - ["Tracheal secretion (18/01/2026)", "No bacterial growth", "—", "—"]
+      - ["Blood cultures ×4 sets (18/01/2026)", "NO BACTERIAL GROWTH — bacteremia ruled out", "—", "—"]
+      - ["Rectal swab surveillance (17/01/2026)", "NEGATIVE for carbapenem-resistant organisms (no KPC/MBL)", "—", "—"]
+      - ["Urine culture — catheter (17/01/2026)", "No bacterial growth", "—", "—"]
+      - - "Urine — candiduria (04/02/2026)"
+        - [{text: "Candida spp.", italic: true}, {text: " — Yeast +++ / Hyphae +++ (nosocomial candiduria, POD 17). Species not identified."}]
+        - "Antifungal susceptibility not performed"
+        - "—"
+
+  antibiotic_table:
+    title_es: "Esquema antibiótico durante la hospitalización"
+    title_en: "Antibiotic regimen during hospitalization"
+    headers_es: ["Período", "Fármaco", "Justificación", "Duración"]
+    headers_en: ["Period", "Drug", "Rationale", "Duration"]
+    widths: [3, 5.5, 5, 4]
+    rows_es:
+      - - "Empírico (desde 17/01/2026)"
+        - "Meropenem 1 g c/8 h IV + Vancomicina 1 g c/12 h IV (desde 17/01/2026)"
+        - "Cobertura empírica: Meropenem vs gramnegativos BLEE; Vancomicina vs cocos grampositivos. Instaurado desde ORL urgencias 17/01/2026."
+        - "Meropenem: continuó indefinido (definitivo). Vancomicina: 14 dosis (~hasta 24/01/2026)"
+      - - "Definitivo (desde 19/01)"
+        - [{text: "Meropenem 1 g c/8 h IV", bold: true},
+           {text: " — único activo vs K. pneumoniae BLEE y E. coli BLEE"}]
+        - "CIM ≤0,25 µg/mL para ambos aislados. Resistencia completa a cefalosporinas y beta-lactámicos."
+        - "14–21 días IV"
+      - - "Antifúngico (desde 20/01/2026 — POD 3)"
+        - "Fluconazol 150 mg IV c/24 h"
+        - "Candiduria nosocomial (POD 17) + Candida en herida cervical. Fluconazol como antifúngico azólico de primera línea."
+        - "14 días"
+    rows_en:
+      - - "Empirical (from 17/01/2026)"
+        - "Meropenem 1 g q8h IV + Vancomycin 1 g q12h IV (from 17/01/2026)"
+        - "Empirical: Meropenem for ESBL gram-negatives; Vancomycin for gram-positive cocci. Initiated from ORL emergency on 17/01/2026."
+        - "Meropenem: continued indefinitely (definitive). Vancomycin: 14 doses (~until 24/01/2026)"
+      - - "Definitive (from 19/01)"
+        - [{text: "Meropenem 1 g q8h IV", bold: true},
+           {text: " — only active agent vs ESBL K. pneumoniae and E. coli (MIC ≤0.25)"}]
+        - "First-line carbapenem for ESBL Enterobacteriaceae. Complete resistance to cephalosporins and beta-lactams."
+        - "14–21 days IV"
+      - - "Antifungal (from 20/01/2026 — POD 3)"
+        - "Fluconazole 150 mg IV q24h"
+        - "Nosocomial candiduria (POD 17) + Candida in cervical wound. Fluconazole as first-line azole antifungal."
+        - "14 days"
+
+  lab_evolution_table:
+    title_es: "Evolución de parámetros de laboratorio — HEEE (enero–febrero 2026)"
+    title_en: "Laboratory parameter evolution during hospitalization — HEEE (January–February 2026)"
+    headers_es: ["Fecha / Servicio", "WBC ×10³", "Hb g/dL", "PCR¹ mg/L", "PCT ng/mL", "Na mEq/L", "K mEq/L", "Glucosa mg/dL"]
+    headers_en: ["Date / Service", "WBC ×10³", "Hb g/dL", "CRP¹ mg/L", "PCT ng/mL", "Na mEq/L", "K mEq/L", "Glucose mg/dL"]
+    widths: [4, 2, 2, 2, 2, 2, 2, 2.5]
+    rows_es:
+      - ["17/01 — ORL Urgencias", "13,11 ↑", "8,3 ↓", "202 ↑↑↑", "0,31", "133 ↓", "2,9 ↓↓", "120 ↑"]
+      - ["18/01 — UCI preop", "13,69 ↑", "8,9 ↓", "189 ↑↑↑", "0,26", "130 ↓↓", "3,3 ↓", "164 ↑↑"]
+      - ["19/01 — UCI posop", "7,06", "8,2 ↓", "—", "—", "132 ↓", "3,8", "93"]
+      - ["20/01 — ORL Piso 6", "8,31", "12,0 ↓", "114 ↑↑", "0,12", "129 ↓↓", "4,1", "—"]
+      - ["22/01 — ORL Piso 6", "5,35", "10,4 ↓", "—", "0,08", "134 ↓", "4,1", "129 ↑"]
+      - ["26/01 — ORL Piso 6", "7,41", "12,0 ↓", "16,7 ↑", "—", "135", "3,6", "114 ↑"]
+      - ["05/02 — ORL Piso 6", "7,67", "11,1 ↓", "8,85 ↑", "—", "135", "4,9", "135 ↑"]
+      - ["09/02 — ORL Piso 6", "9,27", "12,0 ↓", "7,35 ↑", "—", "134 ↓", "5,4 ↑", "139 ↑"]
+      - ["16/02 — Cir. Plástica", "5,97", "10,9 ↓", "—", "—", "138", "4,2", "131 ↑"]
+    rows_en:
+      - ["17/01 — ORL Emergency", "13.11 ↑", "8.3 ↓", "202 ↑↑↑", "0.31", "133 ↓", "2.9 ↓↓", "120 ↑"]
+      - ["18/01 — ICU (preop)", "13.69 ↑", "8.9 ↓", "189 ↑↑↑", "0.26", "130 ↓↓", "3.3 ↓", "164 ↑↑"]
+      - ["19/01 — ICU (postop)", "7.06", "8.2 ↓", "—", "—", "132 ↓", "3.8", "93"]
+      - ["20/01 — ORL Floor 6", "8.31", "12.0 ↓", "114 ↑↑", "0.12", "129 ↓↓", "4.1", "—"]
+      - ["22/01 — ORL Floor 6", "5.35", "10.4 ↓", "—", "0.08", "134 ↓", "4.1", "129 ↑"]
+      - ["26/01 — ORL Floor 6", "7.41", "12.0 ↓", "16.7 ↑", "—", "135", "3.6", "114 ↑"]
+      - ["05/02 — ORL Floor 6", "7.67", "11.1 ↓", "8.85 ↑", "—", "135", "4.9", "135 ↑"]
+      - ["09/02 — ORL Floor 6", "9.27", "12.0 ↓", "7.35 ↑", "—", "134 ↓", "5.4 ↑", "139 ↑"]
+      - ["16/02 — Plastic Surgery", "5.97", "10.9 ↓", "—", "—", "138", "4.2", "131 ↑"]
+    footnote_es: "¹ PCR: proteína C reactiva. PCT: procalcitonina."
+    footnote_en: "¹ CRP: C-reactive protein. PCT: procalcitonin."
+    narrative_parts_es:
+      - text: "La proteína C reactiva (PCR) descendió de 202 mg/L al ingreso hasta 7,35 mg/L al día 22 posoperatorio, reflejando la respuesta favorable al desbridamiento y a meropenem."
+      - text: "12"
+        sup: true
+      - text: " La procalcitonina se mantuvo < 0,5 ng/mL en todos los puntos, concordante con los hemocultivos negativos."
+      - text: "24,15"
+        sup: true
+    narrative_parts_en:
+      - text: "C-reactive protein (CRP) declined from 202 mg/L to 7.35 mg/L by postoperative day 22, confirming response to debridement and meropenem."
+      - text: "12"
+        sup: true
+      - text: " Procalcitonin remained < 0.5 ng/mL throughout follow-up, consistent with negative blood cultures."
+      - text: "24,15"
+        sup: true
+
+  wound_photos:
+    title_es: "6.4 Evolución fotográfica de la herida"
+    title_en: "6.4 Wound evolution — Photographic documentation"
+    intro_es: "Las Figuras 12 y 13 muestran la evolución posquirúrgica temprana (día posoperatorio [POD] 6, 24/01/2026). Las Figuras 15–17 documentan el control ambulatorio (~POD 71, 30–31/03/2026) con granulación activa en los defectos cervical e infraclavicular."
+    intro_en: "Figures 12–13 show early postoperative evolution (postoperative day [POD] 6, January 24, 2026). Figures 15–17 document outpatient follow-up (~POD 71, March 30–31, 2026) with active granulation tissue in the cervical and infraclavicular defects."
+    image_rows:
+      - images:
+          - file: "fig4b_postop_herida_jan24.jpg"
+            width_cm: 8
+            caption_es: "Evolución posquirúrgica (POD 6, 24/01/2026): vista general de la herida cervical con drenaje activo (azul) y cura abierta bilateral. Reducción evidente del edema perilesional respecto al ingreso (17/01/2026)."
+            caption_en: "Postoperative evolution (POD 6, January 24, 2026): general view of cervical wound with active blue drain and bilateral open wound management. Evident perilesional edema reduction compared to admission (January 17, 2026)."
+          - file: "fig4a_postop_traqueo_jan24.jpg"
+            width_cm: 8
+            caption_es: "Evolución posquirúrgica (POD 6, 24/01/2026): acercamiento de la traqueostomía cervical con cánula in situ, suturas de afrontamiento y tejido de granulación incipiente en los bordes de la herida."
+            caption_en: "Postoperative evolution (POD 6, January 24, 2026): close-up of cervical tracheostomy with cannula in place, approximation sutures and incipient granulation tissue at wound margins."
+      - images:
+          - file: "fig5a_control_cervical_mar30.jpg"
+            width_cm: 5.5
+            caption_es: "Control ambulatorio (~POD 71, 30/03/2026): defecto cervical submandibular con tejido de granulación activo y defecto infraclavicular derecho en proceso de cierre por segunda intención."
+            caption_en: "Outpatient follow-up (~POD 71, March 30, 2026): submandibular cervical defect with active granulation tissue and right infraclavicular defect healing by secondary intention."
+          - file: "fig5b_control_infraclavicular_mar30.jpg"
+            width_cm: 5.5
+            caption_es: "Control ambulatorio (30/03/2026): acercamiento del defecto infraclavicular con tejido de granulación activo, bordes bien definidos sin signos de infección activa."
+            caption_en: "Outpatient follow-up (March 30, 2026): close-up of infraclavicular defect with active granulation tissue, well-defined edges, and no signs of active infection."
+          - file: "fig5c_control_panoramico_mar31.jpg"
+            width_cm: 5.5
+            caption_es: "Control ambulatorio (31/03/2026): vista panorámica cervical con evolución favorable del defecto. Granulación activa en resolución. Cicatrización por segunda intención en curso."
+            caption_en: "Outpatient follow-up (March 31, 2026): panoramic cervical view showing favorable defect evolution. Active granulation in resolution. Healing by secondary intention ongoing."
+
+  complications:
+    title_es: "6.5 Complicaciones posoperatorias"
+    title_en: "6.5 Postoperative complications"
+    items_es:
+      - label: "Hipoxemia aguda (POD 5, 23/01): "
+        text: "SatO2 85,7%, PaO2 47,9 mmHg, Dímero D 1,27 µg/mL. Compatible con atelectasia o neumonía aspirativa."
+      - label: "Hiponatremia e hipopotasemia recurrentes: "
+        text: "Na mín. 129 mEq/L, K mín. 2,9 mEq/L. Corrección progresiva con reposición IV."
+      - label: "Candiduria nosocomial (POD 17, 04/02): "
+        text: "Candida spp. levaduras +++ / hifas +++. Tratada con fluconazol 150 mg IV c/24 h por 14 días con resolución favorable."
+      - label: "Eosinofilia progresiva: "
+        text: "Hasta 18,7% (09/02). Compatible con reacción a antibioticoterapia prolongada."
+      - label: "Anemia de enfermedad crónica: "
+        text: "Hb 8,2–12,0 g/dL durante toda la hospitalización."
+    items_en:
+      - label: "Acute hypoxemia (POD 5, January 23): "
+        text: "SpO2 85.7%, PaO2 47.9 mmHg, D-dimer 1.27 µg/mL. Compatible with atelectasis or aspiration pneumonia."
+      - label: "Recurrent hyponatremia and hypokalemia: "
+        text: "Minimum Na 129 mEq/L, K 2.9 mEq/L. Progressive IV correction."
+      - label: "Nosocomial candiduria (POD 17, February 4): "
+        text: "Candida spp. yeast +++ / hyphae +++. Treated with fluconazole 150 mg IV q24h for 14 days with favorable resolution."
+      - label: "Progressive eosinophilia: "
+        text: "Up to 18.7% (February 9). Compatible with drug reaction to prolonged antibiotherapy."
+      - label: "Persistent anemia of chronic disease: "
+        text: "Hb 8.2–12.0 g/dL throughout hospitalization."
+
+
+# ── Discusión ─────────────────────────────────────────────────────────────────
+discussion:
+  differential_dx_table:
+    title_es: "Diagnóstico diferencial de las infecciones cervicofaciales profundas"
+    title_en: "Differential diagnosis of deep cervicofacial infections"
+    headers_es: ["Entidad", "Características clínicas", "Hallazgos imagenológicos", "Manejo"]
+    headers_en: ["Entity", "Clinical features", "Imaging findings", "Management"]
+    widths: [3.5, 4.5, 4.5, 4]
+    rows_es:
+      - - "Flemón cervical"
+        - "Induración difusa, sin fluctuación ni necrosis."
+        - "Engrosamiento difuso. Sin gas ni colección."
+        - [{text: "ATB IV + monitorización estrecha."}, {text: "12,13", sup: true}]
+      - - "Absceso cervical profundo"
+        - "Fluctuación, trismus, fiebre moderada."
+        - "Colección hipodensa con realce periférico. Posible gas."
+        - [{text: "Drenaje transcervical + ATB IV."}, {text: "12,13", sup: true}]
+      - - "Angina de Ludwig (inicio)"
+        - [{text: "CASO (inicio): ", bold: true},
+           {text: "Celulitis bilateral suelo boca, trismus funcional, sin fluctuación."}]
+        - "Engrosamiento bilateral submandibular/sublingual. Sin colección definida."
+        - [{text: "Manejo vía aérea + ATB IV + desbridamiento si progresión."}, {text: "1,2", sup: true}]
+      - - "FNC cervical"
+        - [{text: "CASO (progresión): ", bold: true},
+           {text: "Necrosis extensa, escara negra, fístulas fétidas, crepitación, sepsis sistémica."}]
+        - "Gas en tejidos blandos, necrosis fascial, fístulas cutáneas confirmadas (ver Figuras 1–9)."
+        - [{text: "Desbridamiento radical urgente + carbapenems + UCI."}, {text: "9,10", sup: true}]
+    rows_en:
+      - - "Cervical phlegmon"
+        - "Diffuse induration, no fluctuation, no necrosis."
+        - "Diffuse soft tissue thickening. No gas or collection."
+        - [{text: "IV antibiotics + close monitoring."}, {text: "12,13", sup: true}]
+      - - "Deep neck abscess"
+        - "Fluctuation, trismus, moderate fever."
+        - "Hypodense collection with rim enhancement. Gas possible."
+        - [{text: "Transcervical drainage + IV antibiotics."}, {text: "12,13", sup: true}]
+      - - "Ludwig's Angina (onset)"
+        - [{text: "CASE (onset): ", bold: true},
+           {text: "Bilateral cellulitis floor of mouth, functional trismus, no fluctuation."}]
+        - "Bilateral submandibular/sublingual thickening. No defined collection."
+        - [{text: "Airway management + IV ATB + debridement if progression."}, {text: "1,2", sup: true}]
+      - - "Cervical CNF"
+        - [{text: "CASE (progression): ", bold: true},
+           {text: "Extensive necrosis, black eschar, fetid fistulas, crepitation, systemic sepsis."}]
+        - "Soft tissue gas, fascial necrosis, confirmed cutaneous fistulas (see Figures 1–9)."
+        - [{text: "Urgent radical debridement + carbapenems + ICU."}, {text: "9,10", sup: true}]
+
+  subsections:
+    - id: dm_progression
+      title_es: "7.2 Progresión de Angina de Ludwig a FNC en paciente diabética"
+      title_en: "7.2 Progression from Ludwig's Angina to CNF in a diabetic patient"
+      text_es: "[AI_PENDIENTE: Discutir mecanismos de progresión en DM (disfunción neutrófilos, microangiopatía, neuropatía), hiperglucemia al ingreso y retraso de un mes. Citar 1,2,8,21]"
+      text_en: "[AI_PENDING: Discuss progression mechanisms in DM (neutrophil dysfunction, microangiopathy, neuropathy), admission hyperglycemia and one-month delay. Cite 1,2,8,21]"
+
+    - id: esbl_klebsiella
+      title_es: "7.3 Klebsiella pneumoniae BLEE en infección de inicio comunitario"
+      title_en: "7.3 ESBL-producing Klebsiella pneumoniae in a community-onset infection"
+      text_es: "[AI_PENDIENTE: Discutir inusualidad del aislamiento de K. pneumoniae BLEE comunitaria, impacto en elección antibiótica (meropenem), hemocultivos negativos y descenso de PCR como confirmación. Citar 7,8,15,25]"
+      text_en: "[AI_PENDING: Discuss unusual community-onset K. pneumoniae ESBL isolation, antibiotic choice impact (meropenem), negative blood cultures and CRP decline as confirmation. Cite 7,8,15,25]"
+
+    - id: surgical_approaches
+      title_es: "7.4 Abordajes quirúrgicos según espacio fascial comprometido"
+      title_en: "7.4 Surgical approaches by fascial space"
+      # La tabla de abordajes quirúrgicos se define abajo
+
+    - id: complications_discussion
+      title_es: "7.5 Complicaciones"
+      title_en: "7.5 Complications"
+      # Se generan desde la lista de complicaciones
+
+    - id: limitations
+      title_es: "7.6 Limitaciones del caso"
+      title_en: "7.6 Limitations of the case"
+
+  surgical_approaches_table:
+    title_es: "Abordajes quirúrgicos según espacio fascial cervical comprometido"
+    title_en: "Surgical approaches based on compromised cervical fascial space"
+    headers_es: ["Espacio fascial", "Abordaje de elección", "Abordaje alternativo", "Ref."]
+    headers_en: ["Fascial space", "Approach of choice", "Alternative approach", "Ref."]
+    widths: [4, 5, 5, 2]
+    rows_es:
+      - - "Submandibular (Angina de Ludwig)"
+        - "Bilateral submandibular + submentoniano"
+        - "Traqueostomía profiláctica"
+        - [{text: "1,2", sup: true}]
+      - - "FNC cervical extensa (CASO ACTUAL)"
+        - "Desbridamiento radical bilateral (Figuras 10–11)"
+        - "Múltiples incisiones de relajación ± VAC therapy"
+        - [{text: "9,10", sup: true}]
+      - ["Parafaríngeo", "Transcervical submandibular", "Transoral seleccionado", [{text: "13", sup: true}]]
+      - ["Retrofaríngeo", "Transcervical + transoral", "Transoral (pediatría)", [{text: "16", sup: true}]]
+      - ["Carotídeo", "Transcervical anterior al ECM", "—", [{text: "17", sup: true}]]
+      - ["Espacio peligroso / Mediastino", "Transcervical extendido + VATS", "Toracotomía derecha", [{text: "18", sup: true}]]
+    rows_en:
+      - - "Submandibular (Ludwig's Angina)"
+        - "Bilateral submandibular + submental"
+        - "Prophylactic tracheostomy"
+        - [{text: "1,2", sup: true}]
+      - - "Extensive bilateral CNF (PRESENT CASE)"
+        - "Wide radical debridement (Figures 10–11)"
+        - "Multiple relaxation incisions ± VAC therapy"
+        - [{text: "9,10", sup: true}]
+      - ["Parapharyngeal", "Transcervical submandibular", "Transoral selected", [{text: "13", sup: true}]]
+      - ["Retropharyngeal", "Transcervical + transoral", "Transoral in pediatrics", [{text: "16", sup: true}]]
+      - ["Carotid", "Transcervical anterior to SCM", "—", [{text: "17", sup: true}]]
+      - ["Danger space / Mediastinum", "Extended transcervical + VATS", "Right thoracotomy", [{text: "18", sup: true}]]
+
+  complications_discussion_bullets_es:
+    - label: "Mediastinitis descendente necrotizante (MDN): "
+      text: "Mortalidad 11,8–40%. La TAC descartó extensión mediastínica al momento del estudio."
+      sup: "4"
+    - label: "Bacteriemia / Sepsis: "
+      text: "4 sets de hemocultivos negativos. Respuesta favorable al control del foco y meropenem."
+      sup: "15"
+    - label: "Síndrome de Lemierre: "
+      text: "No documentado (hemocultivos negativos). Dímero D elevado (1,27 µg/mL) ameritó vigilancia."
+      sup: "19"
+    - label: "Candidosis nosocomial: "
+      text: "Candiduria POD 17 en DM2 + antibioticoterapia prolongada + catéter vesical. Requirió antifúngico."
+      sup: "20"
+    - label: "Reconstrucción cervical: "
+      text: "Defecto cervical manejado por Cirugía Plástica (~POD 29), documentado en Figuras 12–17."
+      sup: "9"
+  complications_discussion_bullets_en:
+    - label: "DNM: "
+      text: "Mortality 11.8–40%. CT ruled out mediastinal extension."
+      sup: "4"
+    - label: "Bacteremia / Sepsis: "
+      text: "Four blood culture sets negative. Favorable response to source control and meropenem."
+      sup: "15"
+    - label: "Lemierre's syndrome: "
+      text: "Not documented (negative cultures). Elevated D-dimer (1.27 µg/mL) warranted surveillance."
+      sup: "19"
+    - label: "Nosocomial candidosis: "
+      text: "Candiduria POD 17 in T2DM + prolonged antibiotics + urinary catheter. Required antifungal therapy."
+      sup: "20"
+    - label: "Cervical reconstruction: "
+      text: "Residual defect managed by Plastic Surgery (~POD 29), documented in Figures 10–14."
+      sup: "9"
+
+  limitations_bullets_es:
+    - label: "Diseño retrospectivo: "
+      text: "Datos obtenidos mediante revisión de historia clínica tras el alta. Riesgo de datos incompletos."
+    - label: "Técnica de intubación no documentada: "
+      text: "El protocolo anestésico no especifica el método utilizado (videolaringoscopía, fibroscopía u otro) para el manejo de la vía aérea difícil prevista."
+    - label: "Evaluación pulmonar incompleta: "
+      text: "El episodio de hipoxemia grave del POD 5 (SatO₂ 85,7%, Dímero D 1,27 µg/mL) no cuenta con registro de angioTAC pulmonar, limitando la exclusión formal de tromboembolia pulmonar."
+    - label: "Caso único (n = 1): "
+      text: "Los hallazgos no son generalizables. Se requieren series multicentricas para validar las conclusiones."
+    - label: "Seguimiento no protocolizado: "
+      text: "Aunque la paciente continúa en control ambulatorio activo, no existe protocolo formal de seguimiento a largo plazo."
+    - label: "Ausencia de cultivos anaeróbicos confirmatorios: "
+      text: "Los cultivos anaeróbicos no reportaron crecimiento, posiblemente por sensibilidad técnica o uso de antibioticoterapia previa."
+  limitations_bullets_en:
+    - label: "Retrospective design: "
+      text: "Data obtained through medical record review after discharge, with inherent risk of incomplete information."
+    - label: "Intubation technique not documented: "
+      text: "The anesthetic protocol does not specify the method used for difficult airway management (videolaryngoscopy, fiberoptic bronchoscopy, or other)."
+    - label: "Incomplete pulmonary evaluation: "
+      text: "The POD 5 acute hypoxemia episode (SpO₂ 85.7%, D-dimer 1.27 µg/mL) has no CT pulmonary angiography record, limiting formal exclusion of pulmonary thromboembolism."
+    - label: "Single case (n = 1): "
+      text: "Findings are not generalizable. Multicenter prospective series are required to validate conclusions."
+    - label: "Non-protocolized follow-up: "
+      text: "Although active outpatient follow-up continues, no formal long-term protocol exists."
+    - label: "Absence of confirmatory anaerobic cultures: "
+      text: "Anaerobic cultures showed no growth, possibly due to technical sensitivity or prior antibiotics."
+
+
+# ── Conclusiones ──────────────────────────────────────────────────────────────
+conclusions:
+  items_es:
+    - "La Angina de Ludwig complicada con fascitis necrotizante cervical es una emergencia quirúrgica con mortalidad potencial del 15–40%. El diagnóstico precoz con TAC multiplanar (sagital, coronal y axial), el traslado urgente a tercer nivel y el desbridamiento radical inmediato son los pilares del tratamiento."
+    - "La extracción dental sin antibioticoprofilaxis en paciente diabética con hiperglucemia grave (glucosa 299–331 mg/dL) fue el evento desencadenante. La prevención requiere control glucémico estricto previo a procedimientos odontológicos en grupos de riesgo."
+    - "[AI_PENDIENTE: Conclusión sobre K. pneumoniae BLEE y meropenem]"
+    - "Los hemocultivos negativos (4 sets), el descenso de PCR de 202 a 7,35 mg/L en 22 días y la ausencia de extensión mediastínica confirman la eficacia del manejo instaurado."
+    - "El abordaje multidisciplinario ORL–UCI–Infectología–Cirugía Plástica, supervisado por el Servicio de ORL del HEEE, fue determinante en el resultado favorable con 33 días de hospitalización (16/01–18/02/2026) y evolución a cicatrización por segunda intención (documentada en Figuras 12–17)."
+    - "[AI_PENDIENTE: Conclusión sobre brecha del sistema de salud / lección aprendida]"
+  items_en:
+    - "Ludwig's Angina complicated with cervical necrotizing fasciitis is a surgical emergency with potential mortality of 15–40%. Early multiplanar CT diagnosis (sagittal, coronal, and axial planes), urgent tertiary center transfer, and immediate radical debridement are the cornerstones of treatment."
+    - "Molar extraction without antibiotic prophylaxis in a diabetic patient with severe hyperglycemia (glucose 299–331 mg/dL) was the triggering event. Prevention requires strict glycemic control prior to dental procedures in high-risk patients."
+    - "[AI_PENDING: Conclusion about ESBL K. pneumoniae and meropenem]"
+    - "Negative blood cultures (4 sets), CRP decline from 202 to 7.35 mg/L over 22 days, and the absence of mediastinal extension confirm the effectiveness of the established management."
+    - "A multidisciplinary ORL–ICU–Infectious Disease–Plastic Surgery approach supervised by the HEEE ORL Department was key in achieving a favorable outcome with 33 days of hospitalization."
+    - "[AI_PENDING: Conclusion about health system gap / lesson learned]"
+
+
+# ── Referencias (estilo Vancouver) ────────────────────────────────────────────
+references:
+  - "Lamont G, Peterson DC. Ludwig Angina. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024 [citado 2026 Jan 20]. Disponible en: https://www.ncbi.nlm.nih.gov/books/NBK470191/"
+  - "Sichel JY, Attal P, Hocwald E, Eliashar R. Redefining parapharyngeal space infections. Ann Otol Rhinol Laryngol. 2006;115(2):117-23. doi: 10.1177/000348940611500207."
+  - "Huang TT, Liu TC, Chen PR, Tseng FY, Yeh TH, Chen YS. Deep neck infection: analysis of 185 cases. Head Neck. 2004;26(10):854-60. doi: 10.1002/hed.20014."
+  - "Prado-Calleros HM, Jimenez-Fuentes E, Jimenez-Islas O. Descending necrotizing mediastinitis: systematic review on its treatment in the last 6 years, 2010-2015. Head Neck. 2016;38 Suppl 1:E2275-83. doi: 10.1002/hed.24408."
+  - "Har-El G, Aroesty JH, Shaha A, Lucente FE. Changing trends in deep neck abscess. A retrospective study of 110 patients. Oral Surg Oral Med Oral Pathol. 1994;77(5):446-50. doi: 10.1016/0030-4220(94)90175-9."
+  - "Vieira F, Allen SM, Stocks RM, Thompson JW. Deep neck infection. Otolaryngol Clin North Am. 2008;41(3):459-83. doi: 10.1016/j.otc.2008.01.002."
+  - "Sartelli M, Guirao X, Hardcastle TC, et al. 2018 WSES/SIS-E consensus conference: recommendations for antibiotic therapy in abdominal infections in adult patients. World J Emerg Surg. 2019;14:40. doi: 10.1186/s13017-019-0259-0."
+  - "Huang TT, Tseng FY, Liu TC, Hsu CJ, Chen YS. Deep neck infection in diabetic patients: comparison of clinical picture and outcomes with nondiabetic patients. Otolaryngol Head Neck Surg. 2005;132(6):943-7. doi: 10.1016/j.otohns.2005.01.028."
+  - "Stevens DL, Bisno AL, Chambers HF, et al. Practice guidelines for the diagnosis and management of skin and soft tissue infections: 2014 update by the IDSA. Clin Infect Dis. 2014;59(2):147-59. doi: 10.1093/cid/ciu296."
+  - "Becker M, Zbaren P, Hermans R, et al. Necrotizing fasciitis of the head and neck: role of CT in diagnosis and management. Radiology. 1997;202(2):471-6. doi: 10.1148/radiology.202.2.9015076."
+  - "Lazor JB, Cunningham MJ, Eavey RD, Weber AL. Comparison of computed tomography and surgical findings in deep neck infections. Otolaryngol Head Neck Surg. 1994;111(6):746-50. doi: 10.1177/019459989411100607."
+  - "Boscolo-Rizzo P, Stellin M, Muzzi E, et al. Deep neck infections: a study of 365 cases highlighting recommendations for management and treatment. Eur Arch Otorhinolaryngol. 2012;269(4):1241-9. doi: 10.1007/s00405-011-1761-1."
+  - "Marioni G, Staffieri A, Parisi S, et al. Rational diagnostic and therapeutic management of deep neck infections: analysis of 233 consecutive cases. Ann Otol Rhinol Laryngol. 2010;119(3):181-7. doi: 10.1177/000348941011900307."
+  - "Thottam PJ, Vimalachandran S, Shivakumar AM. Airway management in deep neck space infections. J Laryngol Otol. 2012;126(8):835-9. doi: 10.1017/S0022215112001211."
+  - "Rhodes A, Evans LE, Alhazzani W, et al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock: 2016. Crit Care Med. 2017;45(3):486-552. doi: 10.1097/CCM.0000000000002255."
+  - "Grisaru-Soen G, Komisar O, Aizenstein O, et al. Retropharyngeal and parapharyngeal abscess in children. Int J Pediatr Otorhinolaryngol. 2010;74(9):1016-20. doi: 10.1016/j.ijporl.2010.05.030."
+  - "Parhiscar A, Har-El G. Deep neck abscess: a retrospective review of 210 cases. Ann Otol Rhinol Laryngol. 2001;110(11):1051-4. doi: 10.1177/000348940111001111."
+  - "Endo S, Murayama F, Hasegawa T, et al. Guideline of surgical management based on diffusion of descending necrotizing mediastinitis. Jpn J Thorac Cardiovasc Surg. 1999;47(1):14-9. doi: 10.1007/BF03217709."
+  - "Riordan T. Human infection with Fusobacterium necrophorum (Necrobacillosis), with a focus on Lemierre's syndrome. Clin Microbiol Rev. 2007;20(4):622-59. doi: 10.1128/CMR.00011-07."
+  - "Kullberg BJ, Arendrup MC. Invasive fungal disease. Br J Haematol. 2015;171(5):617-29. doi: 10.1111/bjh.13614."
+  - "Mariano RC, de Moraes M, Santos FA, et al. Ludwig's Angina: severity, clinical course and outcomes. Oral Maxillofac Surg. 2021;25(3):307-14. doi: 10.1007/s10006-020-00905-5."
+  - "Martins JR, Chagas OL Jr, Weschenfelder F, et al. The use of antibiotics in odontogenic infections: what is the best choice? J Oral Maxillofac Surg. 2017;75(12):2606.e1-2606.e11. doi: 10.1016/j.joms.2017.08.003."
+  - "Pinto A, Scaglione M, Scuderi MG, et al. Infections of the neck leading to descending necrotizing mediastinitis: role of multi-detector row computed tomography. Eur J Radiol. 2008;65(3):389-94. doi: 10.1016/j.ejrad.2007.04.015."
+  - "Simon L, Gauvin F, Amre DK, et al. Serum procalcitonin and C-reactive protein levels as markers of bacterial infection. Clin Infect Dis. 2004;39(2):206-17. doi: 10.1086/421997."
+  - "Marioni G, Rinaldi R, Staffieri C, et al. Deep neck infection with dental origin: analysis of 85 consecutive cases (2000-2006). Acta Otolaryngol. 2008;128(2):201-6. doi: 10.1080/00016480701387077."
+
+
+# ── Declaración de contribución de autores (CRediT) ──────────────────────────
+author_contributions:
+  roles_es:
+    - "Conceptualización"
+    - "Curación de datos"
+    - "Análisis formal"
+    - "Investigación"
+    - "Metodología"
+    - "Supervisión"
+    - "Validación"
+    - "Visualización"
+    - "Software / Análisis digital"
+    - "Escritura — borrador original"
+    - "Escritura — revisión y edición"
+  roles_en:
+    - "Conceptualization"
+    - "Data curation"
+    - "Formal analysis"
+    - "Investigation"
+    - "Methodology"
+    - "Supervision"
+    - "Validation"
+    - "Visualization"
+    - "Software / Digital analysis"
+    - "Writing — original draft"
+    - "Writing — review & editing"
+  # Columnas: una por autor (mismo orden que la lista de autores arriba)
+  # ✓ = contribuyó, "" = no contribuyó
+  contributions:
+    #                               Gavilanez  Freire   Campoverde  Saenz
+    - role_index: 0   # Conceptualización
+      marks: ["✓", "", "", ""]
+    - role_index: 1   # Curación de datos
+      marks: ["✓", "", "✓", ""]
+    - role_index: 2   # Análisis formal
+      marks: ["✓", "", "", ""]
+    - role_index: 3   # Investigación
+      marks: ["✓", "", "", ""]
+    - role_index: 4   # Metodología
+      marks: ["✓", "", "", ""]
+    - role_index: 5   # Supervisión
+      marks: ["", "✓", "", ""]
+    - role_index: 6   # Validación
+      marks: ["", "✓", "", "✓"]
+    - role_index: 7   # Visualización
+      marks: ["✓", "", "", ""]
+    - role_index: 8   # Software
+      marks: ["", "", "", "✓"]
+    - role_index: 9   # Escritura borrador
+      marks: ["✓", "", "", ""]
+    - role_index: 10  # Escritura revisión
+      marks: ["✓", "✓", "✓", ""]
+  closing_statement_es: "Todos los autores han leído y aprobado la versión final del manuscrito para su publicación."
+  closing_statement_en: "All authors have read and approved the final version of the manuscript for publication."
+
+
+# ── Extracción de fotogramas de video ────────────────────────────────────────
+# El script extraerá automáticamente estas imágenes y las guardará en figs_dir.
+# Si el archivo de imagen ya existe en figs_dir, se omite la extracción.
+# timestamp_sec: puede ser un número (segundos) o un string "HH:MM:SS" o "MM:SS"
+video_frames:
+  - video: "MOVIE-0001.mp4"           # ruta relativa al config
+    output: "tac1_sagital_gas.jpg"
+    timestamp_sec: 5.0
+    description: "TAC sagital — gas retrofaríngeo"
+
+  - video: "MOVIE-0001.mp4"
+    output: "tac2_sagital_coleccion.jpg"
+    timestamp_sec: 15.0
+    description: "TAC sagital — colección purulenta"
+
+  - video: "MOVIE-0001.mp4"
+    output: "tac3_sagital_extension.jpg"
+    timestamp_sec: 30.0
+    description: "TAC sagital — extensión"
+
+  - video: "MOVIE-0002.mp4"
+    output: "tac4_coronal_absceso.jpg"
+    timestamp_sec: 5.0
+    description: "TAC coronal — absceso bilateral"
+
+  - video: "MOVIE-0002.mp4"
+    output: "tac5_coronal_gas.jpg"
+    timestamp_sec: 15.0
+    description: "TAC coronal — gas bilateral"
+
+  - video: "MOVIE-0002.mp4"
+    output: "tac6_coronal_espacios.jpg"
+    timestamp_sec: 25.0
+    description: "TAC coronal — espacios fasciales"
+
+  - video: "MOVIE-0003.mp4"
+    output: "tac7_axial_parafaringeo.jpg"
+    timestamp_sec: 5.0
+    description: "TAC axial — parafaríngeo"
+
+  - video: "MOVIE-0003.mp4"
+    output: "tac8_axial_submandibular.jpg"
+    timestamp_sec: 20.0
+    description: "TAC axial — submandibular"
+
+# Imágenes clínicas copiadas/renombradas hacia figs_dir
+# (Si ya están en figs_dir con el nombre correcto, se omite)
+image_copies:
+  - source: "IMG-20260117-WA0012.jpg"
+    dest: "fig2_preop_necrosis_jan17.jpg"
+    description: "Foto clínica preoperatoria — necrosis jan17"
+
+  - source: "PXL_20260124_105559491.jpg"
+    dest: "fig4b_postop_herida_jan24.jpg"
+    description: "POD 6 — herida cervical"
+
+  - source: "PXL_20260124_105605962.jpg"
+    dest: "fig4a_postop_traqueo_jan24.jpg"
+    description: "POD 6 — traqueostomía"
+
+  - source: "WhatsApp Image 2026-03-30 at 4.10.38 PM.jpeg"
+    dest: "fig5a_control_cervical_mar30.jpg"
+    description: "POD 71 — control cervical"
+
+  - source: "WhatsApp Image 2026-03-30 at 4.10.43 PM.jpeg"
+    dest: "fig5b_control_infraclavicular_mar30.jpg"
+    description: "POD 71 — defecto infraclavicular"
+
+  - source: "WhatsApp Image 2026-03-31 at 11.32.30 AM.jpeg"
+    dest: "fig5c_control_panoramico_mar31.jpg"
+    description: "POD 71 — vista panorámica"
+
+  - source: "IMG-20260118-WA0003.jpg"
+    dest: "fig3a_intraop_desbrid_jan18.jpg"
+    description: "Intraoperatorio — desbridamiento"
+
+  - source: "IMG-20260118-WA0004.jpg"
+    dest: "fig3b_intraop_diseccion_jan18.jpg"
+    description: "Intraoperatorio — disección"
