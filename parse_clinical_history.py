@@ -805,7 +805,6 @@ def main():
         print(f'\n✓ Datos guardados en: {out_path}')
     elif not args.summary:
         if HAS_YAML:
-            import json
             print(yaml.dump(data, allow_unicode=True, default_flow_style=False,
                             sort_keys=False, indent=2))
 
