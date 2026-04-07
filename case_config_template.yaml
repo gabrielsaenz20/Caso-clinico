@@ -7,11 +7,28 @@
 #   [AI_PENDIENTE: ...] → Texto que requiere generación por IA o redacción manual.
 #                         Aparecerá en el documento en color naranja como marcador.
 #   paths               → Rutas relativas a la ubicación de este archivo YAML.
+#
+# DATOS DEL PACIENTE — SE EXTRAEN AUTOMÁTICAMENTE del PDF de historia clínica:
+#   demographics, motivo de consulta, enfermedad actual, antecedentes,
+#   hábitos, ginecoobstétricos, examen físico, signos vitales, diagnósticos.
+#   Solo es necesario indicar la ruta en sources.clinical_history_pdf.
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # ── Salida ────────────────────────────────────────────────────────────────────
 output_file: "case_report_FINAL.docx"
 figs_dir: "figs"           # Carpeta donde se guardarán fotogramas extraídos y figuras
+
+
+# ── Fuentes de datos (archivos) ───────────────────────────────────────────────
+# El script extrae AUTOMÁTICAMENTE de estos archivos toda la información
+# que pueda obtenerse de forma estructurada.
+sources:
+  # Historia clínica en formato MSP/HOSVITAL (PDF exportado del sistema)
+  # Nombre del archivo = generalmente "APELLIDO NOMBRE.pdf"
+  clinical_history_pdf: "PLAZA QUIMIS GLADIS MARIA.pdf"   # [REQUERIDO] ruta relativa
+
+  # Directorio con PDFs de exámenes de laboratorio (para parse_lab_pdfs.py)
+  lab_pdf_dir: "EXAMENES DE LABORATORIO"                  # [REQUERIDO si hay labs]
 
 
 # ── Información institucional ─────────────────────────────────────────────────
@@ -128,104 +145,32 @@ introduction:
 
 
 # ── Presentación del caso ─────────────────────────────────────────────────────
+# Los datos del paciente (demographics, motivo de consulta, enfermedad actual,
+# antecedentes, hábitos, gineco-obstétricos, examen físico, signos vitales,
+# diagnósticos) se extraen AUTOMÁTICAMENTE del PDF indicado en
+# sources.clinical_history_pdf — NO es necesario ingresarlos aquí.
+#
+# Solo se necesita completar campos que NO aparecen en la historia clínica:
+#   - Datos del centro remitente y servicio de ingreso (si no están en la HC)
+#   - Laboratorios preingreso (tabla comparativa multi-fecha)
+#   - Notas de pie de tabla de laboratorio
 case_presentation:
-  consent_statement_es: "Presentado con consentimiento informado de la paciente, en cumplimiento de la Ley Orgánica de Salud del Ecuador. La identidad se protege mediante iniciales."
-  consent_statement_en: "Reported with informed patient consent per Ecuador's Organic Health Law. Identity protected with initials."
+  # Los campos consent_statement_es/en se auto-generan con texto estándar
+  # Si desea un texto diferente, descomente y personalice:
+  # consent_statement_es: "Presentado con consentimiento informado..."
+  # consent_statement_en: "Reported with informed patient consent..."
 
-  # ── 2.1 Datos generales (tabla automática) ──────────────────────────────────
-  demographics_table:
-    title_es: "Datos generales de la paciente"
-    title_en: "Patient demographic data"
-    headers_es: ["Parámetro", "Dato"]
-    headers_en: ["Parameter", "Data"]
-    widths: [6, 10]
-    rows_es:
-      - ["Paciente (iniciales)", "G.M.P.Q."]
-      - ["Sexo / Edad", "Femenino, 49 años (05/07/1976)"]
-      - ["Procedencia", "Santo Domingo de los Tsáchilas, Ecuador"]
-      - ["Centro remitente", "Hospital Dr. Gustavo Domínguez Zambrano, Santo Domingo"]
-      - ["Fecha de ingreso HEEE", "16 de enero de 2026"]
-      - ["Servicio de ingreso", "Otorrinolaringología — Piso 6, HEEE, Quito"]
-      - ["Historia clínica HEEE", "0802060905"]
-      - ["Médico tutor / Jefe de servicio", "Dr. Christian Alfonso Freire Zamora, MD, Esp. ORL — Jefe del Servicio ORL, HEEE. Tutor del caso."]
-    rows_en:
-      - ["Patient (initials)", "G.M.P.Q."]
-      - ["Sex / Age", "Female, 49 years (07/05/1976)"]
-      - ["Origin", "Santo Domingo de los Tsáchilas, Ecuador"]
-      - ["Referring hospital", "Hospital Dr. Gustavo Domínguez Zambrano, Santo Domingo"]
-      - ["Date of admission (HEEE)", "January 16, 2026"]
-      - ["Admitting service", "Otorhinolaryngology — Floor 6, HEEE, Quito"]
-      - ["HEEE medical record", "0802060905"]
-      - ["Case supervisor / Dept. head", "Dr. Christian Alfonso Freire Zamora, MD, ORL Specialist — Head of ORL Dept., HEEE. Case Supervisor."]
+  # CAMPOS DE OVERRIDE OPCIONALES (descomente para sobreescribir el valor auto-extraído):
+  # demographics_override:
+  #   - ["Centro remitente", "Hospital Dr. Gustavo Domínguez Zambrano, Santo Domingo"]
+  #   - ["Servicio de ingreso", "Otorrinolaringología — Piso 6, HEEE, Quito"]
+  #   - ["Médico tutor", "Dr. Christian Alfonso Freire Zamora, MD, Esp. ORL"]
 
-  # ── 2.2 Motivo de consulta ──────────────────────────────────────────────────
-  chief_complaint:
-    # narrative: texto libre o lista de partes [{text, bold, italic, sup}]
-    narrative_es:
-      - text: "Cuadro de aproximadamente un mes de evolución (inicio: diciembre 2025) de edema mandibular progresivo que se extiende a región cervical y tórax, alzas térmicas, disfagia y aparición de fístulas cutáneas cervicales con drenaje purulento fétido. "
-      - text: "Evento desencadenante: extracción molar el 14/12/2025"
-        bold: true
-      - text: " en contexto ambulatorio sin cobertura antibiótica documentada."
-      - text: "22"
-        sup: true
-    narrative_en:
-      - text: "~One month history (onset December 2025) of progressive mandibular edema extending to neck and chest, fever spikes, dysphagia, and cervical fistulas draining fetid purulent material. "
-      - text: "Triggering event: molar extraction on December 14, 2025"
-        bold: true
-      - text: ", outpatient setting, without documented antibiotic coverage."
-      - text: "22"
-        sup: true
-
-    medical_history_label_es: "Antecedentes: "
-    medical_history_label_en: "Past medical history: "
-    medical_history_es: "DM2 × 11 años (metformina 500 mg VO). Cardiopatía hipertensiva sin IC congestiva (CIE-10: I119). Sin alergias medicamentosas conocidas."
-    medical_history_en: "T2DM × 11 years (metformin 500 mg PO). Hypertensive heart disease without CHF (ICD-10: I119). No known drug allergies."
-
-    lab_footnote_es: "¹ NLR: razón neutrófilo-linfocito (neutrophil-to-lymphocyte ratio). ² PLR: razón plaqueta-linfocito (platelet-to-lymphocyte ratio)."
-    lab_footnote_en: "¹ NLR: neutrophil-to-lymphocyte ratio. ² PLR: platelet-to-lymphocyte ratio."
-
-  # ── 2.3 Examen físico / Vital signs ─────────────────────────────────────────
-  physical_exam:
-    vital_signs_table:
-      title_es: "Signos vitales durante el traslado al HEEE (16/01/2026)"
-      title_en: "Vital signs during transfer to HEEE (January 16, 2026)"
-      headers_es: ["Parámetro", "Valor inicial", "Valor final", "Referencia"]
-      headers_en: ["Parameter", "Initial value", "Final value", "Reference range"]
-      widths: [5, 3.5, 3.5, 4]
-      rows_es:
-        - ["FC (lpm)", "~85", "~104", "60–100"]
-        - ["Temperatura (°C)", "39,2", "38,8", "36,5–37,5"]
-        - ["TA (mmHg)", "~152/89", "~105/75", "< 130/80"]
-        - ["FR (rpm)", "20", "20", "12–20"]
-        - ["SpO2 (%)", "99", "94", "≥ 95"]
-        - ["Glasgow", "15/15", "15/15", "15/15"]
-      rows_en:
-        - ["HR (bpm)", "~85", "~104", "60–100"]
-        - ["Temperature (°C)", "39.2", "38.8", "36.5–37.5"]
-        - ["BP (mmHg)", "~152/89", "~105/75", "< 130/80"]
-        - ["RR (rpm)", "20", "20", "12–20"]
-        - ["SpO2 (%)", "99", "94", "≥ 95"]
-        - ["Glasgow", "15/15", "15/15", "15/15"]
-
-    findings_label_es: "Hallazgos clínicos relevantes al ingreso:"
-    findings_label_en: "Relevant clinical findings on admission:"
-    findings_bullets_es:
-      - "Necrosis tisular extensa en región cervical anterior y lateral con escara negra y áreas de tejido fibrinoide amarillento."
-      - "Fístulas cutáneas activas con drenaje de líquido purulento fétido. Edema indurado submandibular-supraclavicular bilateral."
-      - "Trismus funcional. Voz empastada. Sin estridor audible al ingreso. SpO2 94% durante el traslado."
-      - "Taquicardia (FC ~104 lpm). Temperatura 38,8–39,2°C. Edema grado 2+ en miembros inferiores."
-    findings_bullets_en:
-      - "Extensive tissue necrosis of anterior and lateral cervical region with black eschar and yellowish fibrinoid areas."
-      - "Active cutaneous fistulas with fetid purulent drainage. Bilateral submandibular-supraclavicular indurated edema."
-      - "Functional trismus. Muffled voice. No audible stridor on admission. SpO2 94% during transfer."
-      - "Tachycardia (HR ~104 bpm). Temperature 38.8–39.2°C. Grade 2+ lower limb edema."
-
-  # ── 2.4 Laboratorios preingreso ──────────────────────────────────────────────
+  # ── Laboratorios preingreso (multi-fecha, datos de PDFs de referencia) ────────
+  # Estos datos NO están en la historia clínica principal; vienen de los PDFs
+  # de resultados del hospital remitente. Use parse_lab_pdfs.py para extraerlos
+  # y pegue el resultado aquí, o ingréselos manualmente.
   preingreso_labs:
-    # Opción A: ingresar manualmente los datos de laboratorio
-    # Opción B: usar parse_lab_pdfs.py para extraer automáticamente de los PDFs
-    #           y pegar el resultado en la sección lab_auto_data abajo
-    # lab_pdfs_dir: "EXAMENES DE LABORATORIO"  # activar para extracción automática (ver parse_lab_pdfs.py)
     table:
       title_es: "Evolución de laboratorios preingreso — Hospital Dr. Gustavo Domínguez Zambrano (15–16/01/2026)"
       title_en: "Pre-admission laboratory evolution — Hospital Dr. Gustavo Domínguez Zambrano (January 15–16, 2026)"
@@ -258,6 +203,8 @@ case_presentation:
         - ["pH (blood gas)", "7.581 ↑", "—", "—", "7.35–7.45"]
         - ["Lactate (mmol/L)", "1.2", "—", "—", "0.6–1.7"]
         - ["HBsAg / Anti-HCV", "NEG / NEG", "—", "—", "Negative"]
+    footnote_es: "¹ NLR: razón neutrófilo-linfocito. ² PLR: razón plaqueta-linfocito."
+    footnote_en: "¹ NLR: neutrophil-to-lymphocyte ratio. ² PLR: platelet-to-lymphocyte ratio."
 
 
 # ── Estudios de imagen ────────────────────────────────────────────────────────

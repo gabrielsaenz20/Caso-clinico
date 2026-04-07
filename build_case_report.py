@@ -51,6 +51,13 @@ try:
 except ImportError:
     HAS_FITZ = False
 
+# Importar parser de historia clínica si está disponible
+try:
+    from parse_clinical_history import parse_clinical_history as _parse_hc
+    HAS_HC_PARSER = True
+except ImportError:
+    HAS_HC_PARSER = False
+
 # ─── Colores ──────────────────────────────────────────────────────────────────
 DARK_BLUE = RGBColor(0x1F, 0x38, 0x64)
 MED_BLUE  = RGBColor(0x2E, 0x75, 0xB6)
@@ -132,7 +139,177 @@ def set_spacing(para, before=4, after=4, line=None):
     pPr.append(sp)
 
 
-# ─── CaseReportBuilder ────────────────────────────────────────────────────────
+# ─── Clinical history enrichment ─────────────────────────────────────────────
+
+def _enrich_cfg_from_clinical_history(cfg: dict, hc_data: dict) -> None:
+    """
+    Enriquece el diccionario de configuración con datos extraídos
+    automáticamente de la historia clínica.
+
+    Solo rellena campos que estén vacíos o ausentes en el config — los
+    valores definidos manualmente en el YAML siempre tienen prioridad.
+    """
+    demo = hc_data.get('demographics', {})
+    fil  = hc_data.get('filiation', {})
+    vs   = hc_data.get('vital_signs', {})
+    dx   = hc_data.get('diagnoses', [])
+
+    # ── Datos del paciente ────────────────────────────────────────────────────
+    cp = cfg.setdefault('case_presentation', {})
+    consent_es = (
+        "Presentado con consentimiento informado de la paciente, en cumplimiento "
+        "de la Ley Orgánica de Salud del Ecuador. La identidad se protege mediante iniciales."
+    )
+    consent_en = (
+        "Reported with informed patient consent per Ecuador's Organic Health Law. "
+        "Identity protected with initials."
+    )
+    cp.setdefault('consent_statement_es', consent_es)
+    cp.setdefault('consent_statement_en', consent_en)
+
+    # ── Demographics table (auto-generada desde HC) ───────────────────────────
+    if 'demographics_table' not in cp:
+        # Construir iniciales del paciente
+        name = demo.get('name', '')
+        initials = '.'.join(w[0] for w in name.split() if w) + '.' if name else '?'
+
+        sex_es = demo.get('sex', '')
+        sex_en = 'Female' if 'fem' in sex_es.lower() else ('Male' if 'masc' in sex_es.lower() else sex_es)
+        age    = demo.get('age', '')
+        dob    = demo.get('dob', '')
+        hcu    = demo.get('hcu', '')
+        adm_date = demo.get('admission_date', '')
+        origin = fil.get('origin', '')
+        hosp   = demo.get('hospital', 'Hospital de Especialidades Eugenio Espejo')
+        contact = fil.get('family_contact', '')
+
+        rows_es = [
+            ['Paciente (iniciales)',    initials],
+            ['Sexo / Edad',            f'{sex_es}, {age} (FN: {dob})'],
+            ['Procedencia',            origin],
+            ['Fecha de ingreso HEEE',  adm_date],
+            ['Historia clínica HEEE',  hcu],
+            ['Hospital',               hosp],
+        ]
+        rows_en = [
+            ['Patient (initials)',       initials],
+            ['Sex / Age',               f'{sex_en}, {age} (DOB: {dob})'],
+            ['Origin',                  origin],
+            ['Date of admission (HEEE)', adm_date],
+            ['HEEE medical record',      hcu],
+            ['Hospital',                hosp],
+        ]
+        if contact:
+            rows_es.append(['Contacto familiar', contact])
+            rows_en.append(['Family contact',    contact])
+
+        cp['demographics_table'] = {
+            'title_es': 'Datos generales de la paciente',
+            'title_en': 'Patient demographic data',
+            'headers_es': ['Parámetro', 'Dato'],
+            'headers_en': ['Parameter', 'Data'],
+            'widths': [6, 10],
+            'rows_es': rows_es,
+            'rows_en': rows_en,
+        }
+
+    # ── Chief complaint & present illness ─────────────────────────────────────
+    cc = cp.setdefault('chief_complaint', {})
+
+    # Motivo de consulta
+    motivo = hc_data.get('chief_complaint', '')
+    if motivo and 'narrative_es' not in cc:
+        cc['narrative_es'] = motivo.capitalize()
+        cc['narrative_en'] = '[AI_PENDING: Translate chief complaint to English]'
+
+    # Enfermedad actual
+    ea = hc_data.get('present_illness', '')
+    if ea and 'present_illness_es' not in cc:
+        cc['present_illness_es'] = ea.capitalize()
+        cc['present_illness_en'] = '[AI_PENDING: Translate present illness to English]'
+
+    # Antecedentes patológicos
+    med_hx = hc_data.get('medical_history', [])
+    surg_hx = hc_data.get('surgical_history', [])
+    allergies = hc_data.get('allergies', '')
+    family_hx = hc_data.get('family_history', '')
+    habits = hc_data.get('habits', {})
+    gyneco = hc_data.get('gyneco', {})
+
+    if med_hx and 'medical_history_es' not in cc:
+        cc['medical_history_es'] = '; '.join(ln.capitalize() for ln in med_hx)
+    if surg_hx and 'surgical_history_es' not in cc:
+        cc['surgical_history_es'] = '; '.join(ln.capitalize() for ln in surg_hx)
+    if allergies and 'allergies_es' not in cc:
+        cc['allergies_es'] = allergies
+    if family_hx and 'family_history_es' not in cc:
+        cc['family_history_es'] = family_hx
+    if habits and 'habits_es' not in cc:
+        parts = []
+        labels = {
+            'alcohol': 'Alcohol', 'tobacco': 'Tabaco', 'drugs': 'Drogas',
+            'biomass': 'Biomasa', 'covid_vax': 'Vacuna COVID'
+        }
+        for k, v in habits.items():
+            parts.append(f'{labels.get(k, k)}: {v}')
+        cc['habits_es'] = '; '.join(parts)
+    if gyneco and 'gyneco_es' not in cc:
+        g = gyneco
+        cc['gyneco_es'] = (
+            f"G{g.get('gestas','?')} P{g.get('partos','?')} "
+            f"A{g.get('abortos','?')} C{g.get('cesareas','?')} "
+            f"HV{g.get('hijos_vivos','?')}"
+        )
+
+    # ── Physical exam / Vital signs ───────────────────────────────────────────
+    pe = cp.setdefault('physical_exam', {})
+    if vs and 'vital_signs_table' not in pe:
+        vs_map = {
+            'pa':      ('PA (mmHg)',         'BP (mmHg)'),
+            'fc':      ('FC (lpm)',           'HR (bpm)'),
+            'fr':      ('FR (rpm)',           'RR (rpm)'),
+            'spo2':    ('SpO₂ (%)',           'SpO₂ (%)'),
+            'temp':    ('Temperatura (°C)',   'Temperature (°C)'),
+            'glasgow': ('Glasgow',            'Glasgow'),
+            'peso':    ('Peso (kg)',          'Weight (kg)'),
+            'talla':   ('Talla (cm)',         'Height (cm)'),
+        }
+        rows_es = []
+        rows_en = []
+        for k, val in vs.items():
+            if k in vs_map:
+                rows_es.append([vs_map[k][0], str(val)])
+                rows_en.append([vs_map[k][1], str(val)])
+        if rows_es:
+            pe['vital_signs_table'] = {
+                'title_es': 'Signos vitales al ingreso',
+                'title_en': 'Vital signs on admission',
+                'headers_es': ['Parámetro', 'Valor'],
+                'headers_en': ['Parameter', 'Value'],
+                'widths': [8, 8],
+                'rows_es': rows_es,
+                'rows_en': rows_en,
+            }
+
+    # Physical exam narrative
+    exam_text = hc_data.get('physical_exam', '')
+    if exam_text and 'findings_es' not in pe:
+        pe['findings_es'] = exam_text.capitalize()
+        pe['findings_en'] = '[AI_PENDING: Translate physical exam findings to English]'
+
+    # ── Diagnoses list ────────────────────────────────────────────────────────
+    if dx and 'diagnoses_list' not in cp:
+        cp['diagnoses_list'] = [
+            {'name': d.get('name', ''), 'code': d.get('code', ''),
+             'type': d.get('type', '')}
+            for d in dx
+        ]
+
+    # ── Clinical analysis ─────────────────────────────────────────────────────
+    analysis = hc_data.get('clinical_analysis', '')
+    if analysis and 'clinical_analysis_es' not in cp:
+        cp['clinical_analysis_es'] = analysis.capitalize()
+        cp['clinical_analysis_en'] = '[AI_PENDING: Translate clinical analysis to English]'
 class CaseReportBuilder:
     def __init__(self, config_path):
         self.config_path = Path(config_path).resolve()
@@ -143,6 +320,29 @@ class CaseReportBuilder:
 
         self.figs_dir = self.base_dir / self.cfg.get('figs_dir', 'figs')
         self.figs_dir.mkdir(exist_ok=True)
+
+        # ── Auto-extract data from clinical history PDF if specified ──────────
+        self._hc_data = {}
+        sources = self.cfg.get('sources', {})
+        hc_pdf = sources.get('clinical_history_pdf', '')
+        if hc_pdf:
+            hc_path = self.base_dir / hc_pdf
+            if not hc_path.exists():
+                print(f"AVISO: Historia clínica no encontrada: {hc_path}")
+            elif not HAS_HC_PARSER:
+                print("AVISO: parse_clinical_history.py no disponible. Datos del paciente no serán auto-extraídos.")
+            else:
+                print(f"\n── Extrayendo datos de historia clínica: {hc_pdf} ──")
+                try:
+                    hc_data = _parse_hc(str(hc_path))
+                    _enrich_cfg_from_clinical_history(self.cfg, hc_data)
+                    self._hc_data = hc_data
+                    print(f"  ✓ Paciente: {hc_data['demographics'].get('name','?')}")
+                    print(f"  ✓ Signos vitales extraídos: {len(hc_data.get('vital_signs',{}))}")
+                    print(f"  ✓ Diagnósticos: {len(hc_data.get('diagnoses',[]))}")
+                    print(f"  ✓ Notas de evolución: {len(hc_data.get('evolution_notes',[]))}")
+                except Exception as e:
+                    print(f"  AVISO: Error al parsear historia clínica: {e}")
 
         self.doc = Document()
         self._setup_document()
@@ -792,23 +992,60 @@ class CaseReportBuilder:
         cc_title = '2.2 Motivo de consulta y antecedentes' if lang == 'es' else '2.2 Chief complaint and medical history'
         self.h2(cc_title)
         cc = cp.get('chief_complaint', {})
-        narrative = cc.get(f'narrative_{lang}', '')
-        if isinstance(narrative, list):
-            self.mixed(narrative)
-        else:
-            self.body_or_placeholder(str(narrative))
 
-        mh_label = self._t(cc, 'medical_history_label', lang, '')
+        # Motivo de consulta
+        narrative = cc.get(f'narrative_{lang}', '')
+        if narrative:
+            if isinstance(narrative, list):
+                self.mixed(narrative)
+            else:
+                self.body_or_placeholder(str(narrative))
+
+        # Antecedentes médicos / medical history
+        mh_label_default = 'Antecedentes patológicos: ' if lang == 'es' else 'Medical history: '
+        mh_label = self._t(cc, 'medical_history_label', lang, mh_label_default)
         mh_text = self._t(cc, 'medical_history', lang, '')
-        if mh_label and mh_text:
+        if mh_text:
             self.mixed([{'text': mh_label, 'bold': True}, {'text': mh_text}])
 
+        # Antecedentes quirúrgicos / surgical history
+        sx_label_default = 'Antecedentes quirúrgicos: ' if lang == 'es' else 'Surgical history: '
+        sx_text = cc.get(f'surgical_history_{lang}', cc.get('surgical_history_es', ''))
+        if sx_text:
+            self.mixed([{'text': sx_label_default, 'bold': True}, {'text': sx_text}])
+
+        # Alergias / Allergies
+        al_label = 'Alergias: ' if lang == 'es' else 'Allergies: '
+        al_text = cc.get('allergies_es', '')
+        if al_text:
+            self.mixed([{'text': al_label, 'bold': True}, {'text': al_text}])
+
+        # Antecedentes gineco-obstétricos (solo ES)
+        if lang == 'es':
+            gy_text = cc.get('gyneco_es', '')
+            if gy_text:
+                self.mixed([{'text': 'Gineco-obstétricos: ', 'bold': True}, {'text': gy_text}])
+
+        # Hábitos
+        hab_label = 'Hábitos: ' if lang == 'es' else 'Habits: '
+        hab_text = cc.get('habits_es', '')
+        if hab_text:
+            self.mixed([{'text': hab_label, 'bold': True}, {'text': hab_text}])
+
+        # Enfermedad actual / Present illness
+        ea_label = 'Enfermedad actual: ' if lang == 'es' else 'Present illness: '
+        ea_text = cc.get(f'present_illness_{lang}', cc.get('present_illness_es', ''))
+        if ea_text:
+            self.mixed([{'text': ea_label, 'bold': True}])
+            self.body_or_placeholder(ea_text)
+
+        # Nota pie de laboratorio
         lab_fn = self._t(cc, 'lab_footnote', lang, '')
         if lab_fn:
             self.body(lab_fn, italic=True, color=GRAY, before=0, after=4)
 
         # 2.3 Examen físico / Physical exam
-        pe_title = '2.3 Examen físico al ingreso HEEE' if lang == 'es' else '2.3 Physical exam on HEEE admission'
+        pe_title = '2.3 Examen físico al ingreso' if lang == 'es' else '2.3 Physical exam on admission'
         self.h2(pe_title)
         pe = cp.get('physical_exam', {})
         vs_table = pe.get('vital_signs_table', {})
@@ -817,20 +1054,46 @@ class CaseReportBuilder:
                 self._t(vs_table, 'title', lang, ''),
                 vs_table.get(f'headers_{lang}', []),
                 vs_table.get(f'rows_{lang}', []),
-                vs_table.get('widths', [5, 3.5, 3.5, 4])
+                vs_table.get('widths', [8, 8])
             )
-        findings_label = self._t(pe, 'findings_label', lang, '')
-        if findings_label:
-            self.body(findings_label)
-        for item in pe.get(f'findings_bullets_{lang}', []):
-            self.bullet(item)
 
-        # 2.4 Laboratorios preingreso
-        lab_title = '2.4 Exámenes de laboratorio preingreso' if lang == 'es' else '2.4 Pre-admission laboratory results'
-        self.h2(lab_title)
+        # Hallazgos del examen físico
+        findings_text = self._t(pe, 'findings', lang, '')
+        if not findings_text:
+            # Legacy format: findings_label + findings_bullets
+            findings_label = self._t(pe, 'findings_label', lang, '')
+            if findings_label:
+                self.body(findings_label)
+            for item in pe.get(f'findings_bullets_{lang}', []):
+                self.bullet(item)
+        else:
+            self.body_or_placeholder(findings_text)
+
+        # 2.4 Análisis clínico / Clinical analysis
+        analysis = cp.get(f'clinical_analysis_{lang}', cp.get('clinical_analysis_es', ''))
+        if analysis:
+            an_title = '2.4 Análisis clínico' if lang == 'es' else '2.4 Clinical analysis'
+            self.h2(an_title)
+            self.body_or_placeholder(analysis)
+
+        # 2.5 Diagnósticos / Diagnoses
+        dx_list = cp.get('diagnoses_list', [])
+        if dx_list:
+            dx_title = '2.5 Diagnósticos (CIE-10)' if lang == 'es' else '2.5 Diagnoses (ICD-10)'
+            self.h2(dx_title)
+            for d in dx_list:
+                name = d.get('name', '')
+                code = d.get('code', '')
+                dtype = d.get('type', '')
+                type_label = f' [{dtype}]' if dtype else ''
+                self.bullet(f'[{code}]{type_label} {name}')
+
+        # 2.6 Laboratorios preingreso
         pil = cp.get('preingreso_labs', {})
         lab_table = pil.get('table', {})
         if lab_table:
+            lab_title = '2.6 Exámenes de laboratorio preingreso' if lang == 'es' else '2.6 Pre-admission laboratory results'
+            self.h2(lab_title)
             self.table(
                 self._t(lab_table, 'title', lang, ''),
                 lab_table.get(f'headers_{lang}', []),
